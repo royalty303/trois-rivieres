@@ -143,6 +143,11 @@ renderGrid();$('#nLieux').textContent=`${LIEUX.length} lieux, avec leurs photos 
 
 /* ---------- Sources ---------- */
 const REFS=[
+ ['Ville de Trois-Rivières, fiche patrimoniale de l’église Sainte-Cécile (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Sainte-Cecile.pdf'],
+ ['Dictionnaire biographique du Canada, Frédéric Janssoone','https://www.biographi.ca/en/bio/janssoone_frederic_14E.html'],
+ ['Conférence des évêques catholiques du Canada, Bienheureux Frédéric Janssoone','https://www.cccb.ca/the-catholic-church-in-canada/saints-blesseds-canada/canadian-blesseds/blessed-frederic-janssoone-1838-1916'],
+ ['Musée du Père-Frédéric, la chapelle Saint-Antoine','https://musee.perefrederic.ca/en/the-chapel/'],
+ ['L’Encyclopédie canadienne, Pauline Julien','https://thecanadianencyclopedia.ca/fr/article/pauline-julien'],
  ['Trois-Rivières Numérique, Église Saint-Philippe de Trois-Rivières','https://troisrivieresnumerique.ca/documents/eglise-saint-philippe-de-trois-rivieres-i/'],
  ['Répertoire du patrimoine culturel du Québec, École Saint-Philippe (érection de la paroisse en 1909)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?methode=consulter&id=173747&type=bien'],
  ['Radio-Canada, L’intrigante pierre angulaire de l’église Saint-Philippe (2022)','https://ici.radio-canada.ca/nouvelle/1856918/pierre-angulaire-demolition-eglise'],
