@@ -146,6 +146,7 @@ const REFS=[
  ['Institut canadien des urbanistes, La place Pierre-Boucher et le parc du Platon (site de l’église paroissiale, 1713-1908)','https://www.cip-icu.ca/wp-content/uploads/2023/11/La-place-Pierre-Boucher-et-le-parc-du-Platon.pdf'],
  ['Ville de Trois-Rivières, toponymie : rue du Chanoine-Chamberland','https://www.v3r.net/culture/histoire-et-patrimoine/toponymie/toponyme/chanoine-chamberland'],
  ['Ville de Trois-Rivières, toponymie : Wabasso','https://www.v3r.net/culture/histoire-et-patrimoine/toponymie/toponyme/wabasso'],
+ ['Jacques Bertrand, Pages historiques trifluviennes : fragments d’histoire de Trois-Rivières (le fort, la commune, la maison des gouverneurs, l’église paroissiale, le Flambeau, l’hôtel de ville, le feu de 1908 et la reconstruction, les inondations, la Wabasso, la capitale mondiale du papier)','http://public.sogetel.net/ninibe/index.html'],
  ['Boréalis, historique et mission','https://www.borealis3r.ca/a-propos/historique-et-mission/'],
  ['UQTR, historique','https://www.uqtr.ca/historique/index.shtml'],
  ['René Beaudoin, 22 juin 1908, l’incendie de Trois-Rivières (album de photos)','https://troisrivieresnumerique.ca/wp-content/uploads/2024/09/2013_Beaudoin_incendie-1908.pdf']];
