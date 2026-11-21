@@ -11,7 +11,7 @@ const BASES={
  relief:['Relief','https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',null,'Relief © Esri']};
 const src=(f,w=900)=>f.startsWith('c:')?'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f.slice(2))+'?width='+w:'img/'+f;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const popup=l=>`${l.img[0]?`<img src="${src(l.img[l.img.length-1][0],500)}" alt="">`:''}<small>${esc(l.d)}</small><b>${esc(l.n)}</b>${esc(l.t)}`;
+const popup=l=>`${l.img[0]?`<img src="${src(l.img[l.img.length-1][0],500)}" alt="">`:''}<small>${esc(l.d)}</small><b>${esc(l.n)}</b>${esc(l.t)}${l.ll?`<a class="psv" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${l.ll[0]},${l.ll[1]}" target="_blank" rel="noopener">Street View ↗</a>`:''}`;
 
 /* ---------- Composant carte : fond actuel, plan ancien en fondu, contour du feu ---------- */
 const FEU=[[46.339284,-72.542957],[46.338821,-72.542628],[46.338784,-72.542189],[46.339089,-72.54154],[46.339026,-72.540861],[46.339357,-72.540451],[46.339919,-72.539643],[46.340193,-72.539218],[46.34081,-72.538581],[46.341283,-72.538135],[46.341837,-72.537947],[46.342518,-72.537834],[46.343069,-72.537955],[46.343419,-72.538251],[46.343198,-72.539003],[46.343192,-72.539468],[46.343348,-72.539475],[46.344289,-72.538893],[46.344525,-72.539312],[46.344572,-72.540103],[46.34451,-72.540551],[46.344222,-72.540934],[46.343825,-72.540974],[46.343694,-72.541208],[46.343677,-72.541475],[46.342835,-72.542046],[46.341835,-72.542766],[46.342121,-72.543666],[46.341964,-72.543814],[46.341108,-72.544343],[46.340896,-72.54432],[46.340112,-72.544753],[46.339277,-72.544704],[46.339055,-72.544328],[46.33902,-72.543735],[46.33935,-72.543326]];
@@ -95,7 +95,7 @@ function chapter(i,fly=true){
  $('#ptext').innerHTML=`<p class="count">Étape ${cur+1} sur ${CHAP.length} · ${esc(c.era)}</p><h2>${esc(c.h)}</h2>${gloss(c.p).map(x=>`<p>${x}</p>`).join('')}
   ${c.look?`<div class="look"><b>À OBSERVER SUR LA CARTE</b>${esc(c.look)}</div>`:''}
   ${pins.length?`<div class="chips">${pins.map(l=>`<button class="chip" data-fly="${l.id}"><i style="background:${PER[l.per][1]}"></i>${esc(l.n)}</button>`).join('')}</div>`:''}
-  ${c.doc?`<figure><button data-zoom="img/${c.doc[0]}" data-cap="${esc(c.doc[1])}"><img src="img/${c.doc[0]}" alt="${esc(c.doc[1])}" loading="lazy"></button><figcaption>${esc(c.doc[1])} · touchez pour agrandir</figcaption></figure>`:''}`;
+  ${srcLine(c.s)}${c.doc?`<figure><button data-zoom="img/${c.doc[0]}" data-cap="${esc(c.doc[1])}"><img src="img/${c.doc[0]}" alt="${esc(c.doc[1])}" loading="lazy"></button><figcaption>${esc(c.doc[1])} · touchez pour agrandir</figcaption></figure>`:''}`;
  $('#ptext').scrollTop=0;
  $('#prev').disabled=cur===0;$('#next').textContent=cur===CHAP.length-1?'Explorer la carte →':'Suivant →';
  if(!R)return;
@@ -133,8 +133,8 @@ const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 function renderGrid(){const q=norm($('#q').value||'');
  $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card">
   ${l.sky?`<div class="sky" data-sky="${l.id}"><span>Vue du ciel aujourd’hui</span></div>`:''}${l.img.length?`<div class="pics n${l.img.length}">${l.img.map(([f,y,c])=>`<button data-zoom="${src(f,1600)}" data-cap="${esc(l.n+' · '+y+' · '+c)}"><img src="${src(f,700)}" alt="${esc(l.n+', '+y)}" loading="lazy"><span>${esc(y)}</span></button>`).join('')}</div>`:''}
-  <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${gloss([l.t])[0]}</p>
-  ${l.ll?`<button class="go" data-go="${l.id}">Voir sur la carte →</button>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>';
+  <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${gloss([l.t])[0]}</p>${srcLine(l.s)}
+  ${l.ll?`<div class="acts"><button class="go" data-go="${l.id}">Voir sur la carte →</button><a class="sv" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${l.ll[0]},${l.ll[1]}" target="_blank" rel="noopener">Street View ↗</a></div>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>';
  skyMaps.forEach(m=>m.remove());skyMaps=[];if(window.L)document.querySelectorAll('[data-sky]').forEach(el=>{const l=PL[el.dataset.sky];const m=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView(l.ll,l.sky);L.tileLayer(BASES.satellite[1],{maxZoom:20,maxNativeZoom:19}).addTo(m);skyMaps.push(m)})}
 $('#filters').onclick=e=>{const b=e.target.closest('[data-f]');if(!b)return;lf=b.dataset.f;document.querySelectorAll('#filters [data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderGrid()};
 $('#q').addEventListener('input',renderGrid);
@@ -142,49 +142,9 @@ $('#grid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.data
 renderGrid();$('#nLieux').textContent=`${LIEUX.length} lieux, avec leurs photos d’hier et d’aujourd’hui quand elles existent.`;
 
 /* ---------- Sources ---------- */
-const REFS=[
- ['Ville de Trois-Rivières, fiche patrimoniale de l’église Sainte-Cécile (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Sainte-Cecile.pdf'],
- ['Dictionnaire biographique du Canada, Frédéric Janssoone','https://www.biographi.ca/en/bio/janssoone_frederic_14E.html'],
- ['Conférence des évêques catholiques du Canada, Bienheureux Frédéric Janssoone','https://www.cccb.ca/the-catholic-church-in-canada/saints-blesseds-canada/canadian-blesseds/blessed-frederic-janssoone-1838-1916'],
- ['Musée du Père-Frédéric, la chapelle Saint-Antoine','https://musee.perefrederic.ca/en/the-chapel/'],
- ['L’Encyclopédie canadienne, Pauline Julien','https://thecanadianencyclopedia.ca/fr/article/pauline-julien'],
- ['Trois-Rivières Numérique, Église Saint-Philippe de Trois-Rivières','https://troisrivieresnumerique.ca/documents/eglise-saint-philippe-de-trois-rivieres-i/'],
- ['Répertoire du patrimoine culturel du Québec, École Saint-Philippe (érection de la paroisse en 1909)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?methode=consulter&id=173747&type=bien'],
- ['Radio-Canada, L’intrigante pierre angulaire de l’église Saint-Philippe (2022)','https://ici.radio-canada.ca/nouvelle/1856918/pierre-angulaire-demolition-eglise'],
- ['Ville de Trois-Rivières, fiche patrimoniale de l’église Notre-Dame-des-Sept-Allégresses (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Notre-Dame-des-Sept-Allegresses.pdf'],
- ['Ville de Trois-Rivières, fiche patrimoniale de l’église du Très-Saint-Sacrement (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Tres-Saint-Sacrement.pdf'],
- ['Le Nouvelliste, 1987 : arrivée des Frères des écoles chrétiennes à Trois-Rivières en 1844 (BAnQ)','https://collections.banq.qc.ca/document/s/t/SuTP3vSK30Z3fQOBrrAUvQ'],
- ['ArchDaily, Amphithéâtre Cogeco / Atelier Paul Laurendeau','https://www.archdaily.com/884711/amphitheatre-cogeco-atelier-paul-laurendeau'],
- ['Infrastructure Canada, inauguration de l’amphithéâtre de Trois-Rivières (2015)','https://www.canada.ca/fr/nouvelles/archive/2015/07/ministres-lebel-girard-participent-inauguration-nouvel-amphitheatre-trois-rivieres.html'],
- ['Amphithéâtre Cogeco, le Cirque du Soleil à l’amphithéâtre (2015)','https://www.amphitheatrecogeco.com/en/news/the-corporation-de-l-amphitheatre-de-trois-rivieres-welcomes-cirque-du-soleil-this-summer'],
- ['L’Encyclopédie canadienne, Cap-de-la-Madeleine','https://www.thecanadianencyclopedia.ca/fr/article/cap-de-la-madeleine'],
- ['Sanctuaire Notre-Dame-du-Cap, Historique','https://www.sanctuaire-ndc.ca/en/?p=648'],
- ['Ville de Trois-Rivières, fiche du Petit Sanctuaire et de la basilique Notre-Dame-du-Cap (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Chapelle-du-Sanctuaire-et-Basilique.pdf'],
- ['Dictionnaire biographique du Canada, Pierre Boucher','https://www.biographi.ca/en/bio/boucher_pierre_2E.html'],
- ['Dictionnaire biographique du Canada, Pierre Gaultier de Varennes et de La Vérendrye','https://www.biographi.ca/en/bio/gaultier_de_varennes_et_de_la_verendrye_pierre_3E.html'],
- ['Dictionnaire biographique du Canada, Louis-François Laflèche','https://www.biographi.ca/en/bio/lafleche_louis_francois_12E.html'],
- ['Dictionnaire biographique du Canada, Benjamin Sulte','https://www.biographi.ca/en/bio/sulte_benjamin_15E.html'],
- ['Parcs Canada, Benjamin Sulte (1841-1923)','https://parks.canada.ca/culture/cseh-twih/202438'],
- ['L’Encyclopédie canadienne, Maurice Duplessis','https://thecanadianencyclopedia.ca/fr/article/maurice-le-noblet-duplessis'],
- ['L’Encyclopédie canadienne, Jean Béliveau','https://www.thecanadianencyclopedia.ca/fr/article/jean-beliveau'],
- ['L’Encyclopédie canadienne, Gérald Godin','https://www.thecanadianencyclopedia.ca/fr/article/gerald-godin'],
- ['Université d’Ottawa, Daniel Lamarre (doctorat honorifique)','https://www.uottawa.ca/notre-universite/recteur/doctorats-honorifiques/lamarre-daniel'],
- ['Cirque du Soleil, nomination de Mark Cornell (2025)','https://www.cirquedusoleil.com/press/news/2025/cirque-du-soleil-announces-the-appointment-of-mark-cornell'],
- ['Ville de Trois-Rivières, Survol historique','https://www.v3r.net/culture/histoire-et-patrimoine/histoire-de-trois-rivieres'],
- ['Répertoire du patrimoine culturel du Québec, Site patrimonial de Trois-Rivières (déclaré en 1964)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?id=93531&methode=consulter&type=bien'],
- ['Répertoire, Hôtel de ville et centre culturel de Trois-Rivières (prix Massey 1971, hôtels de ville successifs)','https://www.patrimoine-culturel.gouv.qc.ca/rpcq/detail.do?id=174361&methode=consulter&type=bien'],
- ['Répertoire, Site patrimonial des Ursulines-de-Trois-Rivières','https://www.patrimoine-culturel.gouv.qc.ca/rpcq/detail.do?id=156548&methode=consulter&type=bien'],
- ['Répertoire, Ancienne prison de Trois-Rivières','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?id=92686&methode=consulter&type=bien'],
- ['Répertoire, Maison Maurice-Duplessis','https://www.patrimoine-culturel.gouv.qc.ca/rpcq/detail.do?id=96509&methode=consulter&type=bien'],
- ['Répertoire, Usine de filtration de la CIP','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?id=166359&methode=consulter&type=bien'],
- ['Parcs Canada, Lieu historique national des Forges-du-Saint-Maurice','https://www.pc.gc.ca/apps/dfhd/page_nhs_fra.aspx?id=724'],
- ['Institut canadien des urbanistes, La place Pierre-Boucher et le parc du Platon (site de l’église paroissiale, 1713-1908)','https://www.cip-icu.ca/wp-content/uploads/2023/11/La-place-Pierre-Boucher-et-le-parc-du-Platon.pdf'],
- ['Ville de Trois-Rivières, toponymie : rue du Chanoine-Chamberland','https://www.v3r.net/culture/histoire-et-patrimoine/toponymie/toponyme/chanoine-chamberland'],
- ['Ville de Trois-Rivières, toponymie : Wabasso','https://www.v3r.net/culture/histoire-et-patrimoine/toponymie/toponyme/wabasso'],
- ['Jacques Bertrand, Pages historiques trifluviennes : fragments d’histoire de Trois-Rivières (le fort, la commune, la maison des gouverneurs, l’église paroissiale, le Flambeau, l’hôtel de ville, le feu de 1908 et la reconstruction, les inondations, la Wabasso, la capitale mondiale du papier)','http://public.sogetel.net/ninibe/index.html'],
- ['Boréalis, historique et mission','https://www.borealis3r.ca/a-propos/historique-et-mission/'],
- ['UQTR, historique','https://www.uqtr.ca/historique/index.shtml'],
- ['René Beaudoin, 22 juin 1908, l’incendie de Trois-Rivières (album de photos)','https://troisrivieresnumerique.ca/wp-content/uploads/2024/09/2013_Beaudoin_incendie-1908.pdf']];
+function srcLine(ks){return ks&&ks.length?`<p class="srcs"><b>Sources :</b> ${[...new Set(ks)].map(k=>SRC[k]?(SRC[k][2]?`<a href="${SRC[k][2]}" target="_blank" rel="noopener" title="${esc(SRC[k][1])}">${esc(SRC[k][0])}</a>`:`<span title="${esc(SRC[k][1])}">${esc(SRC[k][0])}</span>`):'').join(' · ')}</p>`:''}
+const REFS=Object.keys(SRC).filter(k=>SRC[k][2]).map(k=>[SRC[k][1],SRC[k][2]]);
+
 $('#refs').innerHTML=REFS.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('');
 const CRED=[['hero-1881.jpg','Vue à vol d’oiseau de Trois-Rivières en 1881, P.-F. Pinsonneault, BAnQ (domaine public)'],['plan-1685.jpg','Plan de Trois-Rivières, 1685, via Wikimedia Commons (domaine public)'],['plan-1704.jpg','Plan de la ville, 1704, Jacques Levasseur de Néré, via Wikimedia Commons (domaine public)'],['plan-1720.jpg','Plan du Platon, 1720, Chaussegros de Léry, Bibliothèque et Archives Canada (domaine public)'],['plan-1760.jpg','Plan de la ville, 1760, via Wikimedia Commons (domaine public)'],['plan-1781.jpg','Trois-Rivières et le lac Saint-Pierre, 1781, J. F. W. Des Barres, BAnQ (domaine public)'],['plan-1815.jpg','La ville en 1815, dans Benjamin Sulte, Histoire des Canadiens-Français, 1882, British Library (domaine public)'],['plan-1861.jpg','Carte de l’Amirauté no 2830a, 1861, McGill Library (domaine public)'],['plan-1903.jpg','Plan d’assurance-incendie, Charles E. Goad, 1888 révisé en 1903, BAnQ (domaine public)'],['plan-incendie.jpg','Périmètre du feu de 1908 sur le plan Goad, Wikimedia Commons (domaine public)'],
  ...LIEUX.flatMap(l=>l.img.map(([f,y,c])=>[f,`${l.n}, ${y} : ${c}`])),['forges-2006.jpg','Rue des Forges, 2006 : Nicholas Wang, CC BY-SA 2.0']];
@@ -192,7 +152,7 @@ $('#credits').innerHTML=CRED.map(([f,t])=>`<li>${f.startsWith('c:')?`<a href="ht
 
 /* ---------- Personnages ---------- */
 const initials=n=>n.replace(/^Mgr /,'').split(/[ -]/).filter(w=>/^[A-ZÉ]/.test(w)).map(w=>w[0]).slice(0,2).join('');
-$('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><div class="mono" aria-hidden="true">${initials(g.n)}</div><p class="dates">${esc(g.v)}</p><h3>${esc(g.n)}</h3><p class="orig">${esc(g.o)}</p><p>${gloss([g.t])[0]}</p>${g.p&&PL[g.p]&&PL[g.p].ll?`<button class="go" data-go="${g.p}">${esc(PL[g.p].n)} sur la carte →</button>`:''}</div></article>`).join('');
+$('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><div class="mono" aria-hidden="true">${initials(g.n)}</div><p class="dates">${esc(g.v)}</p><h3>${esc(g.n)}</h3><p class="orig">${esc(g.o)}</p><p>${gloss([g.t])[0]}</p>${srcLine(g.s)}${g.p&&PL[g.p]&&PL[g.p].ll?`<button class="go" data-go="${g.p}">${esc(PL[g.p].n)} sur la carte →</button>`:''}</div></article>`).join('');
 
 $('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
 
