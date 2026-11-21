@@ -132,7 +132,7 @@ let lf='all',skyMaps=[];
 $('#filters').innerHTML=`<button data-f="all" aria-pressed="true">Tous</button>${Object.entries(PER).map(([k,[n,c]])=>`<button data-f="${k}" aria-pressed="false"><i style="background:${c}"></i>${n}</button>`).join('')}<input type="search" id="q" placeholder="Chercher un lieu, une rue, une date…" aria-label="Chercher un lieu">`;
 const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 function renderGrid(){const q=norm($('#q').value||'');
- $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card">
+ $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card" data-id="${l.id}">
   ${l.sky?`<div class="sky" data-sky="${l.id}"><span>Vue du ciel aujourd’hui</span></div>`:''}${l.img.length?`<div class="pics n${l.img.length}">${l.img.map(([f,y,c])=>`<button data-zoom="${src(f,1600)}" data-cap="${esc(l.n+' · '+y+' · '+c)}"><img src="${src(f,700)}" alt="${esc(l.n+', '+y)}" loading="lazy"><span>${esc(y)}</span></button>`).join('')}</div>`:''}
   <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${gloss([l.t])[0]}</p>${srcLine(l.s)}
   ${l.ll?`<div class="acts"><button class="go" data-go="${l.id}">Voir sur la carte →</button>${l.sv?`<a class="sv" href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>';
@@ -157,13 +157,52 @@ $('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><
 
 $('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
 
+/* ---------- Institutions et noms de lieux ---------- */
+const goBtn=x=>x.p&&PL[x.p]&&PL[x.p].ll?`<button class="go" data-go="${x.p}">${esc(PL[x.p].n)} sur la carte →</button>`:(x.ll?`<button class="go" data-ll="${x.ll.join(',')}" data-n="${esc(x.n)}">Voir sur la carte →</button>`:'');
+const tcard=x=>`<article class="card tcard"><div class="cb"><p class="when">${esc(x.d)}</p><h3>${esc(x.n)}</h3><p>${gloss([x.t])[0]}</p>${srcLine(x.s)}${goBtn(x)}</div></article>`;
+$('#igrid').innerHTML=INST.map(tcard).join('');
+function renderNoms(){const q=norm($('#qn').value||'');$('#ngrid').innerHTML=TOPO.filter(x=>norm(x.n+' '+x.d+' '+x.t).includes(q)).map(tcard).join('')||'<p>Aucun nom ne correspond.</p>'}
+renderNoms();$('#qn').oninput=renderNoms;
+let topoMark=null;
+function goTopo(ll,n){location.hash='#carte';setTimeout(()=>{if(!C)return;if(topoMark)C.map.removeLayer(topoMark);
+ topoMark=L.circleMarker(ll,{radius:10,color:'#fff',weight:3,fillColor:'#b5532b',fillOpacity:1}).addTo(C.map).bindPopup(`<b>${n}</b>`);
+ C.map.flyTo(ll,16.5,{duration:.9});setTimeout(()=>topoMark.openPopup(),950);if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})},60)}
+['#igrid','#ngrid'].forEach(g=>$(g).onclick=e=>{const b=e.target.closest('[data-go],[data-ll]');if(!b)return;if(b.dataset.go)goPlace(b.dataset.go);else goTopo(b.dataset.ll.split(',').map(Number),b.dataset.n)});
+
+/* ---------- Parcours à pied ---------- */
+const STOPS=PARCOURS.map(id=>PL[id]);
+const hav=(a,b)=>{const r=Math.PI/180,x=Math.sin((b[0]-a[0])*r/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin((b[1]-a[1])*r/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
+const pLen=STOPS.reduce((t,l,i)=>i?t+hav(STOPS[i-1].ll,l.ll):0,0);
+$('#pIntro').textContent=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, du lieu de l’ancienne église paroissiale jusqu’à la rue des Forges. Environ ${(Math.round(pLen*1.3/100)/10).toString().replace('.',',')} km de marche; comptez une heure et demie à deux heures avec les arrêts. Chaque arrêt ouvre l’itinéraire à pied depuis votre position.`;
+const firstSent=t=>{const m=t.match(/^.+?[.!?](\s|$)/);return m?m[0].trim():t};
+$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p><div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.ll[0]},${l.ll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div></li>`).join('');
+let P=null;const pMarks=[];
+function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].ll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
+function parcoursMap(){if(P){P.invalidateSize();return}
+ setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[24,24]})},250);
+ P=L.map('mapP',{zoomControl:true}).setView([46.3436,-72.5395],16);
+ L.tileLayer(BASES.carte[1],{maxZoom:20,maxNativeZoom:19,attribution:BASES.carte[3]}).addTo(P);
+ L.polyline(STOPS.map(l=>l.ll),{color:'#b5532b',weight:4,opacity:.75,dashArray:'2 9',lineCap:'round'}).addTo(P);
+ STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.ll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+ P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[30,30]})}
+$('#stops').onclick=e=>{const f=e.target.closest('[data-fiche]');if(f){openFiche(f.dataset.fiche);return}const b=e.target.closest('[data-i]');if(b&&!e.target.closest('a'))pSel(+b.dataset.i)};
+let meMark=null;
+$('#loc').onclick=()=>{if(!navigator.geolocation){$('#loc').textContent='Géolocalisation non disponible';return}
+ $('#loc').textContent='Recherche de votre position…';
+ navigator.geolocation.getCurrentPosition(p=>{const ll=[p.coords.latitude,p.coords.longitude];if(meMark)P.removeLayer(meMark);meMark=L.marker(ll,{icon:L.divIcon({className:'me',iconSize:[16,16]}),title:'Vous êtes ici'}).addTo(P);
+  const d=hav(ll,STOPS[0].ll);$('#loc').textContent='Me situer sur la carte';if(d<5000)P.flyTo(ll,17);else P.fitBounds(L.latLngBounds([ll,...STOPS.map(l=>l.ll)]),{padding:[30,30]})},
+  ()=>{$('#loc').textContent='Position refusée ou indisponible'},{enableHighAccuracy:true,timeout:10000})};
+function openFiche(id){lf='all';$('#q').value='';document.querySelectorAll('#filters [data-f]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f==='all'));renderGrid();location.hash='#lieux';setTimeout(()=>{const el=document.querySelector(`#grid [data-id="${id}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600)}},120)}
+
 /* ---------- Navigation : une vue à la fois, l’onglet actif indique où l’on est ---------- */
-function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','gens','sources'].includes(v)?v:'accueil';
+function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const SUBS=['gens','institutions','noms'];const sub=SUBS.includes(v)?v:null;const view=sub?'gens':['accueil','recit','carte','lieux','parcours','sources'].includes(v)?v:'accueil';
+ if(sub){document.querySelectorAll('.subp').forEach(d=>d.classList.toggle('on',d.id==='s-'+sub));document.querySelectorAll('.subtabs a').forEach(x=>x.toggleAttribute('aria-current',x.dataset.sub===sub))}
  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
  document.querySelectorAll('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+view)||0);
  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.setAttribute('aria-current','page')});
  if(view==='recit'){if(!R){R=MapView($('#mbR'),'mapR')}R.map.invalidateSize();chapter(n?(+n-1):cur,false)}
  if(view==='lieux')skyMaps.forEach(m=>m.invalidateSize());
+ if(view==='parcours'&&window.L)setTimeout(parcoursMap,0);
  if(view==='carte'){if(!C){C=MapView($('#mbC'),'mapC');C.set({doc:'goad'});C.map.setView(DOCS.goad.view.slice(0,2),DOCS.goad.view[2]);
    for(const l of LIEUX)if(l.ll)cMarks[l.id]=L.marker(l.ll,{icon:pinIcon(l,false),title:l.n}).bindPopup(popup(l),{maxWidth:260});syncMarks()}
   C.map.invalidateSize()}

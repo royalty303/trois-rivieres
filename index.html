@@ -701,7 +701,7 @@ main{padding-top:var(--hd)}
 .hero h1{font-size:clamp(3.4rem,8vw,7.5rem);max-width:820px;margin-bottom:22px}
 .hero h1 em{color:#e7b59b}
 .hero p.lead{max-width:470px;font-size:1.1rem;color:#e3e8e7;margin:0 0 34px}
-.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:1180px}
+.doors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;max-width:1180px}
 .door{display:block;text-decoration:none;background:rgba(255,255,255,.96);color:var(--ink);padding:20px 22px;border-top:4px solid var(--accent);transition:transform .15s}
 .door:hover{transform:translateY(-3px)}
 .door b{display:block;font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.1;margin-bottom:6px}
@@ -852,7 +852,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
  :root{--hd:56px}
  header{padding:0 14px}.brand small{display:none}
  nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:2000}
- nav.tabs a{flex-direction:column;gap:2px;font-size:.68rem;padding:5px 8px;border-radius:10px}
+ nav.tabs a{flex-direction:column;gap:2px;font-size:.66rem;padding:5px 3px;border-radius:10px}
  nav.tabs a svg{width:22px;height:22px}
  main{padding-bottom:70px}
  .doors{grid-template-columns:1fr}
@@ -874,7 +874,28 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
  .grid{grid-template-columns:1fr}
  .filters input{margin-left:0;width:100%}
 }
-@media(min-width:901px) and (max-width:1180px){.grid{grid-template-columns:1fr 1fr}.carte{grid-template-columns:minmax(0,1fr) 280px}}
+.x{}
+@media(min-width:901px) and (max-width:1180px){.doors{grid-template-columns:repeat(3,minmax(0,1fr))}nav.tabs a{padding:8px 9px;gap:6px}.grid{grid-template-columns:1fr 1fr}.carte{grid-template-columns:minmax(0,1fr) 280px}}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 22px}
+.subtabs a{border:1px solid var(--ink);padding:8px 15px;font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink)}
+.subtabs a[aria-current]{background:var(--ink);color:#fff}
+.subp{display:none}.subp.on{display:block}
+.tcard .cb{padding:20px 22px}
+.tcard .when{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:0 0 6px;text-transform:uppercase}
+.locbtn{align-self:flex-start;border:1px solid var(--ink);background:#fff;padding:9px 14px;font-weight:600;font-size:.86rem;margin:4px 18px 14px}
+.locbtn:hover{background:var(--ink);color:#fff}
+.card.flash{outline:3px solid var(--accent);outline-offset:2px}
+.stops{list-style:none;margin:0;padding:0;flex:1;overflow-y:auto}
+.stops li{border-top:1px solid var(--line);padding:12px 18px 12px 58px;position:relative}
+.stops li .num{position:absolute;left:18px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85rem;border:0;cursor:pointer}
+.stops li b{display:block;font-size:.98rem;cursor:pointer}
+.stops li small{display:block;color:var(--muted);font-size:.78rem;margin:2px 0 6px}
+.stops li p{font-size:.86rem;margin:0 0 8px}
+.stops li .lk{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem}
+.stops li .lk a,.stops li .lk button{color:var(--ink);font-weight:600;font-size:.8rem;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.stops li.on{background:#f4efe9}
+.pnum{background:var(--accent);color:#fff;border-radius:50%;width:26px!important;height:26px!important;display:grid;place-items:center;font:700 12px/1 system-ui,sans-serif;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.me{background:#1a73e8;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px rgba(26,115,232,.35)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -885,7 +906,8 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
   <a href="#recit"><svg viewBox="0 0 24 24"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/></svg>Le récit</a>
   <a href="#carte"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>La carte</a>
   <a href="#lieux"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Les lieux</a>
-  <a href="#gens"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.3c3 .1 5.5 2.6 5.5 5.7"/></svg>Personnages</a>
+  <a href="#gens"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.3c3 .1 5.5 2.6 5.5 5.7"/></svg>Mémoire</a>
+  <a href="#parcours"><svg viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6-2.5-2.5 1.5-5 3 2.5 3 1"/><path d="M9.5 12.5L7 14"/><path d="M12 15l3 6"/></svg>Parcours</a>
   <a href="#sources"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>Sources</a>
  </nav>
 </header>
@@ -899,7 +921,8 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
     <a class="door" href="#recit"><b>Suivre le récit</b><span>13 étapes, de la confluence à aujourd’hui. La carte se construit à mesure.</span></a>
     <a class="door" href="#carte"><b>Comparer sur la carte</b><span>Les plans de 1704 et de 1888 en fondu sur la ville actuelle, et le contour du feu de 1908.</span></a>
     <a class="door" href="#lieux"><b>Retrouver un lieu</b><span id="nLieux">Tous les lieux du récit, avec leurs photos d’hier et d’aujourd’hui.</span></a>
-    <a class="door" href="#gens"><b>Rencontrer des Trifluviens</b><span>De Pierre Boucher à Jean Béliveau, ceux qui ont marqué la ville.</span></a>
+    <a class="door" href="#gens"><b>La mémoire de la ville</b><span>Des Trifluviens et des Trifluviennes, des institutions phares, et pourquoi tel parc ou telle rue porte son nom.</span></a>
+    <a class="door" href="#parcours"><b>Marcher le Vieux-Trois-Rivières</b><span>16 arrêts à pied, de la place Pierre-Boucher à la rue des Forges.</span></a>
    </div>
   </div><span class="hero-credit">Vue à vol d’oiseau de Trois-Rivières en 1881 · BAnQ</span></div>
  </section>
@@ -939,10 +962,34 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 
  <section class="view" id="v-gens">
   <div class="wrap gens">
-   <p class="eyebrow">PERSONNAGES</p>
-   <h2>Figures trifluviennes</h2>
-   <p class="intro">Nés à Trois-Rivières, ou venus y laisser leur marque, du gouverneur de la Nouvelle-France au patron du Cirque du Soleil. Quand un lieu de la ville leur est lié, un bouton le situe sur la carte.</p>
-   <div class="grid" id="ggrid"></div>
+   <p class="eyebrow">MÉMOIRE</p>
+   <h2>La mémoire de la ville</h2>
+   <div class="subtabs" role="tablist"><a href="#gens" data-sub="gens">Personnages</a><a href="#institutions" data-sub="institutions">Institutions</a><a href="#noms" data-sub="noms">Noms de lieux</a></div>
+   <div class="subp" id="s-gens">
+    <p class="intro">Nés à Trois-Rivières, ou venus y laisser leur marque, du gouverneur de la Nouvelle-France au patron du Cirque du Soleil. Quand un lieu de la ville leur est lié, un bouton le situe sur la carte.</p>
+    <div class="grid" id="ggrid"></div>
+   </div>
+   <div class="subp" id="s-institutions">
+    <p class="intro">Journaux, écoles, festivals : les institutions qui ont donné à la ville sa voix et sa réputation, de la première imprimerie à la capitale de la poésie.</p>
+    <div class="grid" id="igrid"></div>
+   </div>
+   <div class="subp" id="s-noms">
+    <p class="intro">Pourquoi ce nom ? Derrière les plaques de rue et les panneaux de parc, des gens et des épisodes de l’histoire trifluvienne. Les noms les plus récents viennent des décisions du comité de toponymie de la Ville.</p>
+    <div class="filters"><input type="search" id="qn" placeholder="Chercher un nom, un quartier…" aria-label="Chercher un nom de lieu" style="margin-left:0"></div>
+    <div class="grid" id="ngrid"></div>
+   </div>
+  </div>
+ </section>
+
+ <section class="view" id="v-parcours">
+  <div class="carte">
+   <div class="mapbox" id="mbP"><div class="lmap" id="mapP"></div></div>
+   <aside class="side">
+    <h2>Le Vieux-Trois-Rivières à pied</h2>
+    <p class="sub" id="pIntro"></p>
+    <button class="locbtn" id="loc">Me situer sur la carte</button>
+    <ol class="stops" id="stops"></ol>
+   </aside>
   </div>
  </section>
 
@@ -1133,8 +1180,45 @@ const GENS=[
  {n:'Pauline Julien',s:['ce_julien'],v:'1928 – 1998',o:'Née à Trois-Rivières',t:'Elle naît à Trois-Rivières le 23 mai 1928. Comédienne de théâtre, puis chanteuse, « la Renarde » s’impose dans les années 1960 comme une interprète d’une grande intensité et devient une figure des mouvements souverainiste et féministe. Elle tourne aussi au cinéma, notamment dans La Mort d’un bûcheron de Gilles Carle (1973). Elle est la compagne de Gérald Godin, autre Trifluvien, et chevalier de l’Ordre national du Québec.'},
  {n:'Jean Béliveau',s:['ce_beliveau'],v:'1931 – 2014',o:'Né à Trois-Rivières',t:'Aîné de huit enfants, il naît à Trois-Rivières le 31 août 1931; sa famille déménage à Plessisville quand il a trois ans, puis à Victoriaville. « Le Gros Bill » joue toute sa carrière dans la LNH avec le Canadien de Montréal, jusqu’en 1971, et remporte dix coupes Stanley. Il entre au Temple de la renommée du hockey en 1972.'},
  {n:'Gérald Godin',s:['ce_godin'],v:'1938 – 1994',o:'Né à Trois-Rivières',p:'seminaire',t:'Élève du Séminaire Saint-Joseph, il fait ses débuts de journaliste au Nouvelliste avant de partir pour Montréal en 1961. Compagnon de la chanteuse Pauline Julien, poète des Cantouques (1967), il est arrêté pendant la crise d’Octobre 1970. Élu député de Mercier en 1976 contre Robert Bourassa, il devient ministre, notamment des Communautés culturelles et de l’Immigration.'},
- {n:'Daniel Lamarre',s:['uo_lamarre', 'cirque_2025', 'amphi_cirque'],v:'né en 1953',o:'Né à Grand-Mère',p:'cogeco',t:'Journaliste au Nouvelliste de Trois-Rivières à ses débuts, puis à Radio-Canada, il dirige ensuite le Groupe TVA. Président et chef de la direction du Cirque du Soleil de 2001 à 2021, il en reprend la tête par intérim en 2025. C’est sous sa présidence que le Cirque fait de l’Amphithéâtre Cogeco sa résidence d’été, avec une série hommage présentée l’été depuis 2015. L’UQTR lui a décerné un doctorat honorifique.'}
+ {n:'Daniel Lamarre',s:['uo_lamarre', 'cirque_2025', 'amphi_cirque'],v:'né en 1953',o:'Né à Grand-Mère',p:'cogeco',t:'Journaliste au Nouvelliste de Trois-Rivières à ses débuts, puis à Radio-Canada, il dirige ensuite le Groupe TVA. Président et chef de la direction du Cirque du Soleil de 2001 à 2021, il en reprend la tête par intérim en 2025. C’est sous sa présidence que le Cirque fait de l’Amphithéâtre Cogeco sa résidence d’été, avec une série hommage présentée l’été depuis 2015. L’UQTR lui a décerné un doctorat honorifique.'},
+ {n:'Claire Roy',s:['cs_claireroy','cs_claireroy2'],v:'née en 1904',o:'Journaliste au Nouvelliste',t:'Il faut attendre 1954 pour qu’une femme soit embauchée comme journaliste en Mauricie : Claire Roy, dite « Mamie », entame alors une carrière d’environ 25 ans au Nouvelliste. Elle y signe deux chroniques féminines, « La plume et le plumeau » et « Le courrier de Mamie ». En 1967, la Société Saint-Jean-Baptiste de la Mauricie lui remet le prix Ludger-Duvernay. Sa fille, Michelle Roy, entre à son tour au journal en 1956, pour une carrière de trois décennies.'},
+ {n:'Madeleine Saint-Pierre',s:['v3r_topo2025','v3r_msp2026'],v:'1932 – 1997',o:'Poète trifluvienne',t:'Poète, elle enrichit la littérature québécoise pendant une bonne partie du XXe siècle. Elle publie plusieurs ouvrages, collabore avec d’autres artistes et enseigne à l’Université du Québec à Trois-Rivières. Atteinte de la maladie d’Alzheimer, elle quitte ses fonctions avant son décès, en 1997. En 2025, la Ville donne son nom à l’ancien parc des Plaines, dans le district du Carmel.'},
 ];
+
+/* Noms de lieux : pourquoi ce nom ? ll = point vérifié (Google Maps ou OSM); p = lieu déjà présent dans LIEUX */
+const TOPO=[
+ {n:'Parc Claude-Savary',d:'2012 · secteur nord',ll:[46.36911,-72.61369],s:['nouv_savary'],t:'Autrefois parc P.-E.-Neveu, à l’angle des rues P.-E.-Neveu et J.-A.-Lemire. Il honore Claude Savary, mort le 30 octobre 2010, journaliste au Nouvelliste pendant près de 40 ans : d’abord à l’éducation, puis une vingtaine d’années aux affaires judiciaires. Le parc est inauguré le 23 mai 2012. C’est le huitième lieu public trifluvien nommé en l’honneur d’un ancien du Nouvelliste, avec les rues Claude-Masson, Laurent-Paradis, Émile-Jean, Hector-Héroux, Hervé-Biron et J.-H.-Fortier, et l’aréna Claude-Mongrain.'},
+ {n:'Parc Madeleine-Saint-Pierre',d:'2025 · district du Carmel',ll:[46.36137,-72.57599],s:['v3r_topo2025','v3r_msp2026'],t:'Le conseil rebaptise le parc des Plaines en mai 2025 pour honorer la poète Madeleine Saint-Pierre (1932-1997), qui a enseigné à l’UQTR. En août 2026, la Ville y réunit sa famille et ses amis pour lui rendre hommage.'},
+ {n:'Parc Louis-Georges-Dupont',d:'2025 · Sainte-Marguerite',ll:[46.34100,-72.57186],s:['v3r_topo2025','v3r_dupont2025'],t:'Autrefois parc Girard. Né dans le quartier en 1924, Louis-Georges Dupont est sergent-détective à la police de Trois-Rivières. Sa carrière est marquée par son intégrité et sa dénonciation de la corruption au sein de la police; il participe en 1969 à la première commission d’enquête sur la police au Québec, et meurt la même année. Inauguré le 11 août 2025, le parc abrite le plus grand jardin communautaire de la ville.'},
+ {n:'Parc Jean-Guy-Talbot',d:'2024 · Cap-de-la-Madeleine',ll:[46.36668,-72.52465],s:['v3r_topo2024','v3r_talbot2025','v3r_pv2023'],t:'Autrefois parc des Chenaux, du nom de l’ancienne rue des Chenaux, aujourd’hui rue Sainte-Irénée. Renommé en avril 2024 en l’honneur de l’ancien défenseur du Canadien de Montréal, originaire du Cap-de-la-Madeleine, qui a contribué à sept conquêtes de la coupe Stanley. Inauguré le 21 mai 2025.'},
+ {n:'Parc Gérald-Godin',d:'2024 · rue Hart',ll:[46.34469,-72.54106],s:['v3r_topo2024','v3r_pv2023b'],t:'Le petit espace Gérald-Godin, au coin des rues Hart et Bonaventure, ne se limitait guère à une plaque. À la suite d’une demande de la famille, la Ville décide en 2024 de mieux honorer le poète et député né à Trois-Rivières le 13 novembre 1938 : un parc à son nom est aménagé le long de la rue Hart, entre les rues Laviolette et de la Cathédrale. La promenade Aaron-Hart glisse un peu plus bas, entre de la Cathédrale et Bonaventure.'},
+ {n:'Rue Hart',d:'XVIIIe siècle · famille Hart',s:['dcb_hart','mmj_hart'],t:'Arrivé dans le sillage de l’armée britannique, Aaron Hart s’établit à Trois-Rivières en 1761 et tient magasin rue du Platon. En août 1763, le premier bureau de poste de la ville ouvre dans sa maison : c’est sans doute la première charge publique occupée par un Juif au Québec. Son fils Ezekiel, né à Trois-Rivières, est élu député en 1807, le premier Juif élu dans l’Empire britannique, mais il ne peut siéger.'},
+ {n:'Parc de la Cour des Fondatrices',d:'2025 · 770, rue Hart',ll:[46.34590,-72.53894],p:'ursulines',s:['v3r_topo2025'],t:'Nommé en l’honneur des Ursulines, établies à Trois-Rivières en 1697, qui y ont offert soins hospitaliers et éducation aux jeunes filles. Leur maison du XVIIIe siècle abrite aujourd’hui un musée; la cour est ouverte au public.'},
+ {n:'Aire écologique Opoho, plage de l’envol',d:'2025 · Pointe-du-Lac',ll:[46.28622,-72.68999],s:['v3r_topo2025'],t:'L’ancienne « plage à Bozo », sur la rivière Saint-Charles, reçoit un nom atikamekw pour honorer la mémoire des premiers occupants du territoire. Opoho signifie « s’envoler »; on prononce « oppohoo ».'},
+ {n:'Quatre femmes de Saint-Louis-de-France',d:'2025 · Saint-Louis-de-France',ll:[46.42259,-72.59884],s:['v3r_topo2025','v3r_slf2025'],t:'Quatre bâtiments publics du secteur prennent le nom de femmes qui l’ont marqué. La bibliothèque Orise-Longval (1904-2010) : enseignante, puis infirmière à l’Hôpital général juif de Montréal, revenue vivre dans la maison familiale. Le pavillon Jeannette-Leboeuf : première femme élue au conseil municipal, en 1974. L’espace Noëlla-Champagne : conseillère de 1988 à 1997, puis députée pendant trois mandats. Le centre communautaire Thérèse-Morin : conseillère élue trois fois dans les années 1980.'},
+ {n:'Parc Fernand-Lajoie',d:'2025 · district des Estacades',ll:[46.36961,-72.53864],s:['v3r_topo2025'],t:'Autrefois parc du Passage, près de la rivière Saint-Maurice. Fernand Lajoie (mort en 2021) a été conseiller municipal de 1993 à 2013 et maire suppléant pendant 12 ans.'},
+ {n:'Place Alphonse-Piché',d:'devant l’hôtel de ville',ll:[46.34286,-72.54340],s:['nt2_poete','lq_piche','continuite_poesie'],t:'La place devant l’hôtel de ville porte le nom du poète Alphonse Piché (1917-1998). Né à Chicoutimi, ancien élève du Séminaire, il a vécu presque toute sa vie à Trois-Rivières. Le 21 septembre 1994, pour le 10e Festival international de la poésie et le 360e anniversaire de la ville, on y dévoile le Monument au poète inconnu, d’Érik Koch, présenté comme le premier au monde.'},
+ {n:'Terrasse Turcotte',d:'XIXe siècle · bord du fleuve',p:'port',s:['gq_turcotte','wiki_maires'],t:'Le maire Joseph-Édouard Turcotte (1857-1863) cède à la Ville une partie du chemin qui passe devant sa maison; on y construit une promenade de bois qui descend jusqu’à la rue des Forges. Les Trifluviens s’y massent pour regarder la débâcle du printemps. Ravagée par le feu de 1908, la terrasse est ensuite élargie.'},
+ {n:'Rue des Casernes',d:'1765 – 1852',p:'platon',s:['bertrand','cipicu'],t:'De 1765 à 1852, l’ancienne maison des gouverneurs, sur le Platon, sert de caserne militaire. La rue qui y mène en garde le nom.'},
+ {n:'Pont et rue Laviolette',d:'1634',p:'laviolette',s:['wiki_pontlav','banq_laviolette2009'],t:'Le pont, la rue et bien des commerces portent le nom du sieur de Laviolette, à qui l’on attribue la fondation du poste en 1634. On sait pourtant très peu de chose de lui, au point que des historiens doutent de son existence même.'},
+ {n:'Pont Duplessis',d:'1948 · 1951',ll:[46.35813,-72.53698],s:['cd_duplessis','structurae_duplessis'],t:'Le pont sur le Saint-Maurice porte le nom du premier ministre et député de Trois-Rivières. À l’inauguration, Maurice Duplessis déclare : « Ce pont est aussi solide que l’Union nationale ». Dans la nuit du 31 janvier 1951, par un froid de −30 °C, une partie du pont s’effondre dans la rivière, entraînant plusieurs personnes dans la mort; l’acier était devenu cassant sous l’effet du froid. Reconstruit, il porte toujours le même nom.'},
+];
+
+/* Institutions phares. p = lieu de LIEUX lié */
+const INST=[
+ {n:'La Gazette des Trois-Rivières',d:'1817 – 1821',s:['dcb_duvernay','pc_duvernay'],t:'En 1817, à 18 ans, l’imprimeur Ludger Duvernay ouvre la première imprimerie de Trois-Rivières. Le 12 août, il lance La Gazette des Trois-Rivières, le premier journal du Bas-Canada publié hors de Québec et de Montréal. Le journal aurait cessé de paraître en février 1821. Duvernay fonde ensuite d’autres périodiques dans la ville avant de diriger La Minerve, à Montréal, voix du Parti patriote.'},
+ {n:'Le Nouvelliste',d:'depuis 1920',s:['wiki_nouvelliste','op_nouvelliste','bhp_nouvelliste','cs_claireroy2','noovo_nouvelliste'],t:'Fondé le 30 octobre 1920 par le financier Joseph-Hermann Fortier, dans un modeste local de la rue du Platon; Fortier rachète Le Trifluvien pour le remplacer. Pendant la Seconde Guerre mondiale, Hector Héroux en signe la plupart des éditoriaux. En 1954, Claire Roy y devient la première femme embauchée comme journaliste en Mauricie. En 2023, 103 ans après sa première édition, le journal cesse de paraître sur papier. Plusieurs rues et parcs de la ville portent le nom de ses anciens (voir Noms de lieux).'},
+ {n:'Monastère des Ursulines',d:'depuis 1697',p:'ursulines',s:['rpcq_urs'],t:'Les Ursulines s’établissent à Trois-Rivières en 1697 avec une école et un hôpital.'},
+ {n:'Séminaire Saint-Joseph',d:'depuis 1860',p:'seminaire',s:['gq_seminaire','ssj_tourelles'],t:'Le Collège des Trois-Rivières est fondé le 19 mai 1860; en 1874, l’évêché en fait son séminaire diocésain, le Séminaire Saint-Joseph.'},
+ {n:'Conservatoire de musique',d:'depuis 1964',s:['wiki_conservatoire'],t:'Le Conservatoire de musique du Québec à Trois-Rivières ouvre en 1964. Il s’installe en octobre 1978 dans ses locaux actuels de la rue Radisson.'},
+ {n:'Grand Prix de Trois-Rivières',d:'depuis 1967',p:'expo',s:['banq_gp1976','auto123_gp','gq_gp'],t:'Le 10 septembre 1967, des membres du Club Autosport Mauricien, inspirés par Monaco, organisent une course dans les rues de la ville. C’est aujourd’hui la plus ancienne course automobile en circuit urbain d’Amérique du Nord. Le circuit traverse le terrain de l’Exposition; Gilles et Jacques Villeneuve y ont couru.'},
+ {n:'UQTR',d:'depuis 1969',p:'uqtr',s:['uqtr'],t:'L’Université du Québec à Trois-Rivières est créée le 19 mars 1969, pour mieux répartir l’enseignement supérieur hors de Montréal et de Québec.'},
+ {n:'Orchestre symphonique de Trois-Rivières',d:'depuis 1978',s:['ce_musique','wiki_bellemare','bq_ostr'],t:'En 1978, le jeune compositeur Gilles Bellemare relance l’orchestre de la ville sous le nom d’Orchestre régional de Trois-Rivières; il en reste le chef et le directeur artistique jusqu’en 2004. Devenu l’Orchestre symphonique de Trois-Rivières, il compte une cinquantaine de musiciens professionnels.'},
+ {n:'Festival international de la poésie',d:'depuis 1985',s:['gq_fip','nb_poesie','nt2_poete'],t:'À l’automne 1985, Gaston Bellemare, cofondateur de la maison d’édition Écrits des Forges, lance le premier festival : 80 poètes et plus de 5 000 spectateurs. Invité d’honneur, Félix Leclerc déclare Trois-Rivières « capitale de la poésie ». Depuis 1989, des extraits de poèmes s’affichent sur les murs de la ville; en 1994 s’ajoute, devant l’hôtel de ville, le Monument au poète inconnu.'},
+];
+
+/* Parcours à pied : ordre des arrêts (ids de LIEUX) */
+const PARCOURS=['boucher','platon','port','armes','rueursulines','stjames','ursulines','ecole','prison','niverville','duplessis','cathedrale','champlain','hdv','thompson','forges'];
 
 const SRC={
  beaudet:["Notes de la conférence de Gérard Beaudet (2026)", "Notes de la conférence de Gérard Beaudet, urbaniste (Université de Montréal), 19 novembre 2026, prises par Maxime Savary", ""],
@@ -1215,7 +1299,44 @@ const SRC={
  continuite_vieuxport:["Continuité, 1984", "Continuité, no 22 (1984), Le projet du Vieux-Port de Trois-Rivières", "https://releve.erudit.org/fr/revues/continuite/1984-n22-continuite1051153/18860ac.pdf"],
  banq_prison:["Le Nouvelliste (BAnQ)", "Le Nouvelliste, sur la Vieille prison de Trois-Rivières (BAnQ)", "https://collections.banq.qc.ca/document/s/t/_YMyID-WpfryEahLGKfrKw"],
  hssh_coop:["Histoire sociale, 1994", "Jean-Pierre Collin, La Ligue ouvrière catholique et la question du logement dans les années 1940", "https://hssh.journals.yorku.ca/index.php/hssh/article/download/16540/15399/16670"],
- uqtr_stemarguerite:["UQTR (mémoire)", "Mémoire de maîtrise UQTR sur la Caisse populaire Sainte-Marguerite de Trois-Rivières", "https://depot-e.uqtr.ca/id/eprint/4737/1/000628952.pdf"]
+ uqtr_stemarguerite:["UQTR (mémoire)", "Mémoire de maîtrise UQTR sur la Caisse populaire Sainte-Marguerite de Trois-Rivières", "https://depot-e.uqtr.ca/id/eprint/4737/1/000628952.pdf"],
+ cs_claireroy:["Récits Mauriciennes : Claire Roy", "Musée virtuel du Canada, Histoires de chez nous, Mauriciennes et presse régionale : Claire Roy", "https://www.communitystories.ca/v2/mauriciennes-presse-regionale_mauricie-women-local-press/?p=349"],
+ cs_claireroy2:["Récits Mauriciennes : 1955", "Musée virtuel du Canada, Histoires de chez nous, Mauriciennes et presse régionale : glissement de terrain à Nicolet, article de Claire Roy (1955)", "https://www.communitystories.ca/v2/mauriciennes-presse-regionale_mauricie-women-local-press/?p=353"],
+ nouv_savary:["Le Nouvelliste, 24 mai 2012", "Martin Francoeur, Le Nouvelliste, 24 mai 2012 (inauguration du parc Claude-Savary); fiche du parc, Ville de Trois-Rivières", "https://www.v3r.net/activites-et-loisirs/parcs/parc-claude-savary"],
+ v3r_topo2025:["Ville, 20 mai 2025", "Ville de Trois-Rivières, Trois-Rivières renomme plusieurs lieux pour honorer des gens qui ont marqué son histoire, 20 mai 2025", "https://www.v3r.net/wp-content/uploads/2025/05/Communique_nouveauxnoms_espacespublics_toponymie.pdf"],
+ v3r_msp2026:["Ville, 4 août 2026", "Ville de Trois-Rivières, La Ville honore la poète trifluvienne Madeleine Saint-Pierre, 4 août 2026", "https://www.v3r.net/wp-content/uploads/2026/08/Communique-La-Ville-honore-la-poete-trifluvienne-Madeleine-Saint-Pierre.pdf"],
+ v3r_dupont2025:["Ville, 11 août 2025", "Ville de Trois-Rivières, Parc Louis-Georges-Dupont : hommage à l’engagement d’un policier exemplaire, 11 août 2025", "https://www.v3r.net/wp-content/uploads/2025/08/Communique-Inauguration-du-parc-Louis-Georges-Dupont.pdf"],
+ v3r_topo2024:["Ville, 16 avril 2024", "Ville de Trois-Rivières, Le parc des Chenaux renommé en l’honneur de Jean-Guy Talbot (et parc Gérald-Godin), 16 avril 2024", "https://www.v3r.net/wp-content/uploads/2024/04/Communique-changements-toponymiques.pdf"],
+ v3r_talbot2025:["Ville, 21 mai 2025", "Ville de Trois-Rivières, Trois-Rivières inaugure le parc Jean-Guy-Talbot, 21 mai 2025", "https://www.v3r.net/wp-content/uploads/2025/05/Communique-Trois-Rivieres-inaugure-le-parc-Jean-Guy-Talbot.pdf"],
+ v3r_pv2023:["Comité de toponymie, 2023", "Ville de Trois-Rivières, procès-verbal du comité de toponymie, 26 avril 2023", "https://www.v3r.net/wp-content/uploads/2023/06/06-06-2023_08-44-29_AM_PV_2023-04-26_.pdf"],
+ v3r_pv2023b:["Comité de toponymie, sept. 2023", "Ville de Trois-Rivières, procès-verbal du comité de toponymie (espace Gérald-Godin), 2023", "https://www.v3r.net/wp-content/uploads/2023/12/21-12-2023_11-31-57_AM_Extrait-du-proces-verbal-de-la-reunion-tenue.pdf"],
+ v3r_slf2025:["Ville, 2 sept. 2025", "Ville de Trois-Rivières, Cinq nouveaux noms s’inscrivent dans la toponymie trifluvienne (Saint-Louis-de-France), 2 septembre 2025", "https://www.v3r.net/wp-content/uploads/2025/09/Communique-Inauguration-de-cinq-toponymes-dans-le-secteur-de-Saint-Louis-de-France.pdf"],
+ dcb_hart:["DBC : Aaron Hart", "Dictionnaire biographique du Canada, Hart, Aaron", "https://www.biographi.ca/en/bio/hart_aaron_4E.html"],
+ mmj_hart:["Musée juif de Montréal", "Musée du Montréal juif, Aaron Hart – résidence", "https://museemontrealjuif.ca/exhibit/aaron-hart-residence"],
+ nt2_poete:["NT2 (UQAM), Poète inconnu", "Laboratoire NT2, UQAM, Érik Koch, Monument au poète inconnu, 1994", "https://archive.nt2.uqam.ca/plepuc/fr/print/342/index.html"],
+ lq_piche:["Lettres québécoises, 1999", "Bernard Pozier et Gaston Bellemare, Hommage au poète Alphonse Piché, Lettres québécoises no 93, 1999", "https://www.erudit.org/fr/revues/lq/1999-n93-lq1185905/37816ac.pdf"],
+ continuite_poesie:["Continuité, 2013", "Magali Cochard, Trois-Rivières tatouée poésie, Continuité no 137, 2013", "https://www.erudit.org/en/journals/continuite/2013-n137-continuite0748/69664ac/"],
+ gq_turcotte:["Grand Québec : terrasse Turcotte", "Grand Québec, Terrasse Turcotte à Trois-Rivières", "https://grandquebec.com/mauricie/terrasse-turcotte/"],
+ wiki_maires:["Wikipédia : maires", "Wikipédia, List of mayors of Trois-Rivières", "https://en.wikipedia.com/wiki/Mayor_of_Trois-Rivi%C3%A8res"],
+ wiki_pontlav:["Wikipédia : pont Laviolette", "Wikipédia, Laviolette Bridge", "https://Www.Wikipedia.org/wiki/Laviolette_Bridge"],
+ banq_laviolette2009:["Le Nouvelliste, 2 juillet 2009", "Marie-Josée Montminy, Des doutes subsistent quant à l’existence même du sieur de Laviolette, Le Nouvelliste, 2 juillet 2009 (BAnQ)", "https://collections.banq.qc.ca/document/s/t/8ke1CItEtXmXoX89BZaKjg"],
+ cd_duplessis:["Cap-aux-Diamants, 2005", "Jacques Lacoursière, « Un pont solide comme l’Union nationale »?, Cap-aux-Diamants no 83, 2005", "https://releve.erudit.org/fr/revues/cd/2005-n83-cd1045643/7054ac.pdf"],
+ structurae_duplessis:["Structurae : pont Duplessis", "Structurae, Pont Duplessis", "https://structurae.net/fr/ouvrages/pont-duplessis"],
+ dcb_duvernay:["DBC : Ludger Duvernay", "Dictionnaire biographique du Canada, Duvernay, Ludger", "https://www.biographi.ca/en/bio/duvernay_ludger_8E.html"],
+ pc_duvernay:["Parcs Canada : Duvernay", "Parcs Canada, Personnage historique national de Ludger Duvernay (1799-1852)", "https://parcs.canada.ca/culture/designation/personnage-person/ludger-duvernay"],
+ wiki_nouvelliste:["Wikipédia : Le Nouvelliste", "Wikipédia, Le Nouvelliste (Quebec)", "https://en.wikipedia.org/wiki/Le_Nouvelliste_(Quebec)"],
+ op_nouvelliste:["Chambre des communes, 2021", "Chambre des communes, déclaration du 27 janvier 2021 (fondation du Nouvelliste, rue du Platon)", "https://op-alpheus.openparliament.ca/debates/2021/1/27/louise-charbonneau-1/only"],
+ bhp_nouvelliste:["Bulletin d’histoire politique, 1999", "Ivan Carel, Le Nouvelliste : un quotidien régional et la tourmente française, Bulletin d’histoire politique 7(2), 1999", "https://www.erudit.org/fr/revue/bhp/1999/v7/n2/1060318ar.pdf"],
+ noovo_nouvelliste:["Noovo Info", "Noovo Info, Le quotidien Le Nouvelliste met fin à son édition papier", "https://www.noovo.info/video/le-quotidien-le-nouvelliste-met-fin-a-son-edition-papier.html"],
+ wiki_conservatoire:["Wikipédia : Conservatoire", "Wikipédia, Conservatoire de musique du Québec à Trois-Rivières", "https://en.wikipedia.org/wiki/Conservatoire_de_musique_du_Qu%C3%A9bec_%C3%A0_Trois-Rivi%C3%A8res"],
+ banq_gp1976:["L’Hebdo, 1er sept. 1976", "Déjà dix ans, L’Hebdo, 1er septembre 1976 (BAnQ)", "https://collections.banq.qc.ca/document/s/t/eAjYySEurY-G-00ONDEXgg"],
+ auto123_gp:["Auto123", "Auto123, GP Trois-Rivières : l’action commence demain", "https://www.auto123.com/fr/actualites/gp-trois-rivieres-laction-commence-demain/36489/"],
+ gq_gp:["Grand Québec : Grand Prix", "Grand Québec, Grand Prix de Trois-Rivières", "https://grandquebec.com/sport-au-quebec/grand-prix-trois-rivieres/"],
+ ce_musique:["Encyclopédie canadienne : musique", "L’Encyclopédie canadienne, Music in Trois-Rivières", "https://thecanadianencyclopedia.ca/en/article/trois-rivieres-que-emc"],
+ wiki_bellemare:["Wikipédia : Gilles Bellemare", "Wikipédia, Gilles Bellemare (composer)", "https://en.wikipedia.org/wiki/Gilles_Bellemare_(composer)"],
+ bq_ostr:["Bonjour Québec : OSTR", "Bonjour Québec, Orchestre symphonique de Trois-Rivières", "https://www.bonjourquebec.com/en-us/listing/to-see-and-do/orchestre-symphonique-de-trois-rivieres/29o5"],
+ gq_fip:["Grand Québec : Festival de la poésie", "Grand Québec, Festival international de la poésie de Trois-Rivières", "https://grandquebec.com/archives-du-grandquebec/festival-poesie/"],
+ nb_poesie:["Nuit blanche, 1994", "Trois-Rivières affiche la poésie, Nuit blanche no 57, 1994", "https://www.erudit.org/en/journals/nb/1994-n57-nb1117146/19643ac.pdf"]
 };
 </script>
 <script>{
@@ -1352,7 +1473,7 @@ let lf='all',skyMaps=[];
 $('#filters').innerHTML=`<button data-f="all" aria-pressed="true">Tous</button>${Object.entries(PER).map(([k,[n,c]])=>`<button data-f="${k}" aria-pressed="false"><i style="background:${c}"></i>${n}</button>`).join('')}<input type="search" id="q" placeholder="Chercher un lieu, une rue, une date…" aria-label="Chercher un lieu">`;
 const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 function renderGrid(){const q=norm($('#q').value||'');
- $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card">
+ $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card" data-id="${l.id}">
   ${l.sky?`<div class="sky" data-sky="${l.id}"><span>Vue du ciel aujourd’hui</span></div>`:''}${l.img.length?`<div class="pics n${l.img.length}">${l.img.map(([f,y,c])=>`<button data-zoom="${src(f,1600)}" data-cap="${esc(l.n+' · '+y+' · '+c)}"><img src="${src(f,700)}" alt="${esc(l.n+', '+y)}" loading="lazy"><span>${esc(y)}</span></button>`).join('')}</div>`:''}
   <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${gloss([l.t])[0]}</p>${srcLine(l.s)}
   ${l.ll?`<div class="acts"><button class="go" data-go="${l.id}">Voir sur la carte →</button>${l.sv?`<a class="sv" href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>';
@@ -1377,13 +1498,52 @@ $('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><
 
 $('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
 
+/* ---------- Institutions et noms de lieux ---------- */
+const goBtn=x=>x.p&&PL[x.p]&&PL[x.p].ll?`<button class="go" data-go="${x.p}">${esc(PL[x.p].n)} sur la carte →</button>`:(x.ll?`<button class="go" data-ll="${x.ll.join(',')}" data-n="${esc(x.n)}">Voir sur la carte →</button>`:'');
+const tcard=x=>`<article class="card tcard"><div class="cb"><p class="when">${esc(x.d)}</p><h3>${esc(x.n)}</h3><p>${gloss([x.t])[0]}</p>${srcLine(x.s)}${goBtn(x)}</div></article>`;
+$('#igrid').innerHTML=INST.map(tcard).join('');
+function renderNoms(){const q=norm($('#qn').value||'');$('#ngrid').innerHTML=TOPO.filter(x=>norm(x.n+' '+x.d+' '+x.t).includes(q)).map(tcard).join('')||'<p>Aucun nom ne correspond.</p>'}
+renderNoms();$('#qn').oninput=renderNoms;
+let topoMark=null;
+function goTopo(ll,n){location.hash='#carte';setTimeout(()=>{if(!C)return;if(topoMark)C.map.removeLayer(topoMark);
+ topoMark=L.circleMarker(ll,{radius:10,color:'#fff',weight:3,fillColor:'#b5532b',fillOpacity:1}).addTo(C.map).bindPopup(`<b>${n}</b>`);
+ C.map.flyTo(ll,16.5,{duration:.9});setTimeout(()=>topoMark.openPopup(),950);if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})},60)}
+['#igrid','#ngrid'].forEach(g=>$(g).onclick=e=>{const b=e.target.closest('[data-go],[data-ll]');if(!b)return;if(b.dataset.go)goPlace(b.dataset.go);else goTopo(b.dataset.ll.split(',').map(Number),b.dataset.n)});
+
+/* ---------- Parcours à pied ---------- */
+const STOPS=PARCOURS.map(id=>PL[id]);
+const hav=(a,b)=>{const r=Math.PI/180,x=Math.sin((b[0]-a[0])*r/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin((b[1]-a[1])*r/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
+const pLen=STOPS.reduce((t,l,i)=>i?t+hav(STOPS[i-1].ll,l.ll):0,0);
+$('#pIntro').textContent=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, du lieu de l’ancienne église paroissiale jusqu’à la rue des Forges. Environ ${(Math.round(pLen*1.3/100)/10).toString().replace('.',',')} km de marche; comptez une heure et demie à deux heures avec les arrêts. Chaque arrêt ouvre l’itinéraire à pied depuis votre position.`;
+const firstSent=t=>{const m=t.match(/^.+?[.!?](\s|$)/);return m?m[0].trim():t};
+$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p><div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.ll[0]},${l.ll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div></li>`).join('');
+let P=null;const pMarks=[];
+function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].ll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
+function parcoursMap(){if(P){P.invalidateSize();return}
+ setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[24,24]})},250);
+ P=L.map('mapP',{zoomControl:true}).setView([46.3436,-72.5395],16);
+ L.tileLayer(BASES.carte[1],{maxZoom:20,maxNativeZoom:19,attribution:BASES.carte[3]}).addTo(P);
+ L.polyline(STOPS.map(l=>l.ll),{color:'#b5532b',weight:4,opacity:.75,dashArray:'2 9',lineCap:'round'}).addTo(P);
+ STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.ll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+ P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[30,30]})}
+$('#stops').onclick=e=>{const f=e.target.closest('[data-fiche]');if(f){openFiche(f.dataset.fiche);return}const b=e.target.closest('[data-i]');if(b&&!e.target.closest('a'))pSel(+b.dataset.i)};
+let meMark=null;
+$('#loc').onclick=()=>{if(!navigator.geolocation){$('#loc').textContent='Géolocalisation non disponible';return}
+ $('#loc').textContent='Recherche de votre position…';
+ navigator.geolocation.getCurrentPosition(p=>{const ll=[p.coords.latitude,p.coords.longitude];if(meMark)P.removeLayer(meMark);meMark=L.marker(ll,{icon:L.divIcon({className:'me',iconSize:[16,16]}),title:'Vous êtes ici'}).addTo(P);
+  const d=hav(ll,STOPS[0].ll);$('#loc').textContent='Me situer sur la carte';if(d<5000)P.flyTo(ll,17);else P.fitBounds(L.latLngBounds([ll,...STOPS.map(l=>l.ll)]),{padding:[30,30]})},
+  ()=>{$('#loc').textContent='Position refusée ou indisponible'},{enableHighAccuracy:true,timeout:10000})};
+function openFiche(id){lf='all';$('#q').value='';document.querySelectorAll('#filters [data-f]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f==='all'));renderGrid();location.hash='#lieux';setTimeout(()=>{const el=document.querySelector(`#grid [data-id="${id}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600)}},120)}
+
 /* ---------- Navigation : une vue à la fois, l’onglet actif indique où l’on est ---------- */
-function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','gens','sources'].includes(v)?v:'accueil';
+function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const SUBS=['gens','institutions','noms'];const sub=SUBS.includes(v)?v:null;const view=sub?'gens':['accueil','recit','carte','lieux','parcours','sources'].includes(v)?v:'accueil';
+ if(sub){document.querySelectorAll('.subp').forEach(d=>d.classList.toggle('on',d.id==='s-'+sub));document.querySelectorAll('.subtabs a').forEach(x=>x.toggleAttribute('aria-current',x.dataset.sub===sub))}
  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
  document.querySelectorAll('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+view)||0);
  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.setAttribute('aria-current','page')});
  if(view==='recit'){if(!R){R=MapView($('#mbR'),'mapR')}R.map.invalidateSize();chapter(n?(+n-1):cur,false)}
  if(view==='lieux')skyMaps.forEach(m=>m.invalidateSize());
+ if(view==='parcours'&&window.L)setTimeout(parcoursMap,0);
  if(view==='carte'){if(!C){C=MapView($('#mbC'),'mapC');C.set({doc:'goad'});C.map.setView(DOCS.goad.view.slice(0,2),DOCS.goad.view[2]);
    for(const l of LIEUX)if(l.ll)cMarks[l.id]=L.marker(l.ll,{icon:pinIcon(l,false),title:l.n}).bindPopup(popup(l),{maxWidth:260});syncMarks()}
   C.map.invalidateSize()}

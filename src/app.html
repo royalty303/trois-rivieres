@@ -40,7 +40,7 @@ main{padding-top:var(--hd)}
 .hero h1{font-size:clamp(3.4rem,8vw,7.5rem);max-width:820px;margin-bottom:22px}
 .hero h1 em{color:#e7b59b}
 .hero p.lead{max-width:470px;font-size:1.1rem;color:#e3e8e7;margin:0 0 34px}
-.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:1180px}
+.doors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;max-width:1180px}
 .door{display:block;text-decoration:none;background:rgba(255,255,255,.96);color:var(--ink);padding:20px 22px;border-top:4px solid var(--accent);transition:transform .15s}
 .door:hover{transform:translateY(-3px)}
 .door b{display:block;font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.1;margin-bottom:6px}
@@ -191,7 +191,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
  :root{--hd:56px}
  header{padding:0 14px}.brand small{display:none}
  nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:2000}
- nav.tabs a{flex-direction:column;gap:2px;font-size:.68rem;padding:5px 8px;border-radius:10px}
+ nav.tabs a{flex-direction:column;gap:2px;font-size:.66rem;padding:5px 3px;border-radius:10px}
  nav.tabs a svg{width:22px;height:22px}
  main{padding-bottom:70px}
  .doors{grid-template-columns:1fr}
@@ -213,7 +213,28 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
  .grid{grid-template-columns:1fr}
  .filters input{margin-left:0;width:100%}
 }
-@media(min-width:901px) and (max-width:1180px){.grid{grid-template-columns:1fr 1fr}.carte{grid-template-columns:minmax(0,1fr) 280px}}
+.x{}
+@media(min-width:901px) and (max-width:1180px){.doors{grid-template-columns:repeat(3,minmax(0,1fr))}nav.tabs a{padding:8px 9px;gap:6px}.grid{grid-template-columns:1fr 1fr}.carte{grid-template-columns:minmax(0,1fr) 280px}}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 22px}
+.subtabs a{border:1px solid var(--ink);padding:8px 15px;font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink)}
+.subtabs a[aria-current]{background:var(--ink);color:#fff}
+.subp{display:none}.subp.on{display:block}
+.tcard .cb{padding:20px 22px}
+.tcard .when{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:0 0 6px;text-transform:uppercase}
+.locbtn{align-self:flex-start;border:1px solid var(--ink);background:#fff;padding:9px 14px;font-weight:600;font-size:.86rem;margin:4px 18px 14px}
+.locbtn:hover{background:var(--ink);color:#fff}
+.card.flash{outline:3px solid var(--accent);outline-offset:2px}
+.stops{list-style:none;margin:0;padding:0;flex:1;overflow-y:auto}
+.stops li{border-top:1px solid var(--line);padding:12px 18px 12px 58px;position:relative}
+.stops li .num{position:absolute;left:18px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85rem;border:0;cursor:pointer}
+.stops li b{display:block;font-size:.98rem;cursor:pointer}
+.stops li small{display:block;color:var(--muted);font-size:.78rem;margin:2px 0 6px}
+.stops li p{font-size:.86rem;margin:0 0 8px}
+.stops li .lk{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem}
+.stops li .lk a,.stops li .lk button{color:var(--ink);font-weight:600;font-size:.8rem;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.stops li.on{background:#f4efe9}
+.pnum{background:var(--accent);color:#fff;border-radius:50%;width:26px!important;height:26px!important;display:grid;place-items:center;font:700 12px/1 system-ui,sans-serif;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.me{background:#1a73e8;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px rgba(26,115,232,.35)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -224,7 +245,8 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
   <a href="#recit"><svg viewBox="0 0 24 24"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/></svg>Le récit</a>
   <a href="#carte"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>La carte</a>
   <a href="#lieux"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Les lieux</a>
-  <a href="#gens"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.3c3 .1 5.5 2.6 5.5 5.7"/></svg>Personnages</a>
+  <a href="#gens"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.3c3 .1 5.5 2.6 5.5 5.7"/></svg>Mémoire</a>
+  <a href="#parcours"><svg viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6-2.5-2.5 1.5-5 3 2.5 3 1"/><path d="M9.5 12.5L7 14"/><path d="M12 15l3 6"/></svg>Parcours</a>
   <a href="#sources"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>Sources</a>
  </nav>
 </header>
@@ -238,7 +260,8 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
     <a class="door" href="#recit"><b>Suivre le récit</b><span>13 étapes, de la confluence à aujourd’hui. La carte se construit à mesure.</span></a>
     <a class="door" href="#carte"><b>Comparer sur la carte</b><span>Les plans de 1704 et de 1888 en fondu sur la ville actuelle, et le contour du feu de 1908.</span></a>
     <a class="door" href="#lieux"><b>Retrouver un lieu</b><span id="nLieux">Tous les lieux du récit, avec leurs photos d’hier et d’aujourd’hui.</span></a>
-    <a class="door" href="#gens"><b>Rencontrer des Trifluviens</b><span>De Pierre Boucher à Jean Béliveau, ceux qui ont marqué la ville.</span></a>
+    <a class="door" href="#gens"><b>La mémoire de la ville</b><span>Des Trifluviens et des Trifluviennes, des institutions phares, et pourquoi tel parc ou telle rue porte son nom.</span></a>
+    <a class="door" href="#parcours"><b>Marcher le Vieux-Trois-Rivières</b><span>16 arrêts à pied, de la place Pierre-Boucher à la rue des Forges.</span></a>
    </div>
   </div><span class="hero-credit">Vue à vol d’oiseau de Trois-Rivières en 1881 · BAnQ</span></div>
  </section>
@@ -278,10 +301,34 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 
  <section class="view" id="v-gens">
   <div class="wrap gens">
-   <p class="eyebrow">PERSONNAGES</p>
-   <h2>Figures trifluviennes</h2>
-   <p class="intro">Nés à Trois-Rivières, ou venus y laisser leur marque, du gouverneur de la Nouvelle-France au patron du Cirque du Soleil. Quand un lieu de la ville leur est lié, un bouton le situe sur la carte.</p>
-   <div class="grid" id="ggrid"></div>
+   <p class="eyebrow">MÉMOIRE</p>
+   <h2>La mémoire de la ville</h2>
+   <div class="subtabs" role="tablist"><a href="#gens" data-sub="gens">Personnages</a><a href="#institutions" data-sub="institutions">Institutions</a><a href="#noms" data-sub="noms">Noms de lieux</a></div>
+   <div class="subp" id="s-gens">
+    <p class="intro">Nés à Trois-Rivières, ou venus y laisser leur marque, du gouverneur de la Nouvelle-France au patron du Cirque du Soleil. Quand un lieu de la ville leur est lié, un bouton le situe sur la carte.</p>
+    <div class="grid" id="ggrid"></div>
+   </div>
+   <div class="subp" id="s-institutions">
+    <p class="intro">Journaux, écoles, festivals : les institutions qui ont donné à la ville sa voix et sa réputation, de la première imprimerie à la capitale de la poésie.</p>
+    <div class="grid" id="igrid"></div>
+   </div>
+   <div class="subp" id="s-noms">
+    <p class="intro">Pourquoi ce nom ? Derrière les plaques de rue et les panneaux de parc, des gens et des épisodes de l’histoire trifluvienne. Les noms les plus récents viennent des décisions du comité de toponymie de la Ville.</p>
+    <div class="filters"><input type="search" id="qn" placeholder="Chercher un nom, un quartier…" aria-label="Chercher un nom de lieu" style="margin-left:0"></div>
+    <div class="grid" id="ngrid"></div>
+   </div>
+  </div>
+ </section>
+
+ <section class="view" id="v-parcours">
+  <div class="carte">
+   <div class="mapbox" id="mbP"><div class="lmap" id="mapP"></div></div>
+   <aside class="side">
+    <h2>Le Vieux-Trois-Rivières à pied</h2>
+    <p class="sub" id="pIntro"></p>
+    <button class="locbtn" id="loc">Me situer sur la carte</button>
+    <ol class="stops" id="stops"></ol>
+   </aside>
   </div>
  </section>
 
