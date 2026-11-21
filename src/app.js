@@ -1,7 +1,9 @@
 {
 const $=s=>document.querySelector(s);
 const PL=Object.fromEntries(LIEUX.map(l=>[l.id,l]));
-const DOCS={goad:{file:'img/plan-1903.jpg',label:'Plan Goad 1888-1903',short:'1888-1903',view:[46.3445,-72.5415,15.5],
+const DOCS={p1704:{file:'img/plan-1704-calage.jpg',label:'Plan de 1704',short:'1704',view:[46.3432,-72.5392,16.5],
+  geo:[[46.341669,-72.541739],[46.346897,-72.537569],[46.340174,-72.537796]]},
+ goad:{file:'img/plan-1903.jpg',label:'Plan Goad 1888-1903',short:'1888-1903',view:[46.3445,-72.5415,15.5],
   geo:[[46.337787,-72.576246],[46.370483,-72.556104],[46.325015,-72.529308]]}};
 const BASES={
  carte:['Carte','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}','https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}','Carte © Esri, HERE, Garmin, contributeurs OpenStreetMap'],
@@ -22,8 +24,8 @@ function MapView(box,el){
  const img=document.createElement('img');img.className='docimg';img.alt='';pane.appendChild(img);
  const feu=L.polygon(FEU,{color:'#c0281b',weight:3,dashArray:'8 6',fillColor:'#e0502a',fillOpacity:.13}).bindTooltip('Zone détruite par le feu du 22 juin 1908',{sticky:true});
  box.insertAdjacentHTML('beforeend',`<div class="ctl"><div class="row"><span class="lbl">FOND</span><div class="seg" data-k="base">${Object.entries(BASES).map(([k,b])=>`<button data-v="${k}">${b[0]}</button>`).join('')}</div></div>
-  <div class="row"><span class="lbl">HIER</span><div class="seg" data-k="doc"><button data-v="">Aucun plan</button><button data-v="goad">Plan de 1888-1903</button></div><button class="feubtn" data-feu>Feu de 1908</button></div>
-  <div class="row mixrow"><span class="lbl">OPACITÉ</span><span class="sm">Aujourd’hui</span><input type="range" min="0" max="100" value="70" aria-label="Opacité du plan ancien"><span class="sm">1888</span></div></div><p class="fail"></p>`);
+  <div class="row"><span class="lbl">HIER</span><div class="seg" data-k="doc"><button data-v="">Aucun plan</button><button data-v="p1704">1704</button><button data-v="goad">1888-1903</button></div><button class="feubtn" data-feu>Feu de 1908</button></div>
+  <div class="row mixrow"><span class="lbl">OPACITÉ</span><span class="sm">Aujourd’hui</span><input type="range" min="0" max="100" value="70" aria-label="Opacité du plan ancien"><span class="sm docyear">1888</span></div></div><p class="fail"></p>`);
  const ctl=box.querySelector('.ctl'),rng=ctl.querySelector('input'),fail=box.querySelector('.fail');
  L.DomEvent.disableClickPropagation(ctl);L.DomEvent.disableScrollPropagation(ctl);
  const tiles={};
@@ -39,14 +41,14 @@ function MapView(box,el){
  function apply(){
   for(const s of ctl.querySelectorAll('.seg'))for(const b of s.children)b.setAttribute('aria-pressed',String((st[s.dataset.k]||'')===b.dataset.v));
   ctl.querySelector('[data-feu]').setAttribute('aria-pressed',String(st.feu));
-  ctl.querySelector('.mixrow').hidden=!st.doc;rng.value=st.t;
+  ctl.querySelector('.mixrow').hidden=!st.doc;if(st.doc)ctl.querySelector('.docyear').textContent=DOCS[st.doc].short;rng.value=st.t;
   for(const k in tiles)if(k!==st.base&&map.hasLayer(tiles[k]))map.removeLayer(tiles[k]);
   if(!map.hasLayer(tile(st.base))){fail.classList.remove('on');tile(st.base).addTo(map)}
   st.feu?feu.addTo(map):map.removeLayer(feu);
   pane.style.opacity=st.t/100;draw()}
  ctl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.hasAttribute('data-feu')){st.feu=!st.feu;if(st.feu)map.flyToBounds(feu.getBounds(),{padding:[60,60],duration:.8})}
-  else{const k=b.parentElement.dataset.k;st[k]=b.dataset.v||null;if(k==='doc'&&st.doc)map.flyTo(DOCS.goad.view.slice(0,2),DOCS.goad.view[2],{duration:.8})}
+  else{const k=b.parentElement.dataset.k;st[k]=b.dataset.v||null;if(k==='doc'&&st.doc)map.flyTo(DOCS[st.doc].view.slice(0,2),DOCS[st.doc].view[2],{duration:.8})}
   apply()});
  rng.addEventListener('input',()=>{st.t=+rng.value;apply()});
  map.on('zoomstart',()=>img.style.visibility='hidden');map.on('zoomend viewreset',()=>{draw();img.style.visibility='visible'});
@@ -71,9 +73,15 @@ document.addEventListener('click',e=>{const b=e.target.closest('.term');
 addEventListener('keydown',e=>{if(e.key==='Escape')pop.hidden=true});
 addEventListener('scroll',()=>pop.hidden=true,true);
 
-/* ---------- Visionneuse ---------- */
-const lb=$('#lb');
-document.addEventListener('click',e=>{const b=e.target.closest('[data-zoom]');if(!b)return;lb.querySelector('img').src=b.dataset.zoom;lb.querySelector('p').textContent=b.dataset.cap||'';lb.showModal()});
+/* ---------- Visionneuse : flèches entre les images d’un même lieu ---------- */
+const lb=$('#lb');let gal=[],gi=0;
+function showLb(){const b=gal[gi];lb.querySelector('img').src=b.dataset.zoom;lb.querySelector('p').textContent=b.dataset.cap||'';
+ const many=gal.length>1;lb.querySelectorAll('.nav').forEach(n=>n.hidden=!many);lb.querySelector('.cnt').textContent=many?`${gi+1} / ${gal.length}`:''}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-zoom]');if(!b)return;const g=b.closest('.pics');gal=g?[...g.querySelectorAll('[data-zoom]')]:[b];gi=gal.indexOf(b);showLb();lb.showModal()});
+const step=d=>{if(gal.length<2)return;gi=(gi+d+gal.length)%gal.length;showLb()};
+$('#lbp').onclick=()=>step(-1);$('#lbn').onclick=()=>step(1);
+lb.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();step(-1)}if(e.key==='ArrowRight'){e.preventDefault();step(1)}});
+let tx=null;lb.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});lb.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)step(dx<0?1:-1);tx=null});
 $('#lbx').onclick=()=>lb.close();lb.addEventListener('click',e=>{if(e.target===lb)lb.close()});
 
 /* ---------- Le récit ---------- */
@@ -97,7 +105,7 @@ function chapter(i,fly=true){
   const m=L.marker(l.ll,{icon:pinIcon(l,!now),zIndexOffset:now?500:0,title:l.n}).bindPopup(popup(l),{maxWidth:260}).addTo(R.map);
   if(now&&pins.length<=4)m.bindTooltip(l.n,{permanent:true,direction:'right',offset:[8,0],className:'plbl'});
   rMarks.push(m)}
- R.set({base:c.base||'carte',doc:c.doc2==='goad'?'goad':null,feu:c.doc2==='feu',t:70});
+ R.set({base:c.base||'carte',doc:DOCS[c.doc2]?c.doc2:null,feu:c.doc2==='feu',t:70});
  if(fly)R.map.flyTo(c.v.slice(0,2),c.v[2],{duration:1.1});else R.map.setView(c.v.slice(0,2),c.v[2]);
 }
 $('#steps').onclick=e=>{const b=e.target.closest('[data-i]');if(b)chapter(+b.dataset.i)};
