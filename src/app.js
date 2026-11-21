@@ -1,8 +1,8 @@
 {
 const $=s=>document.querySelector(s);
 const PL=Object.fromEntries(LIEUX.map(l=>[l.id,l]));
-const DOCS={p1704:{file:'img/plan-1704-calage.jpg',label:'Plan de 1704',short:'1704',view:[46.3432,-72.5392,16.5],
-  geo:[[46.341669,-72.541739],[46.346897,-72.537569],[46.340174,-72.537796]]},
+const DOCS={p1704:{file:'img/plan-1704-calage.jpg',label:'Plan de 1704',short:'1704',view:[46.34335,-72.53775,16.5],
+  geo:[[46.342608,-72.541651],[46.346066,-72.536379],[46.340714,-72.539053]]},
  goad:{file:'img/plan-1903.jpg',label:'Plan Goad 1888-1903',short:'1888-1903',view:[46.3445,-72.5415,15.5],
   geo:[[46.337787,-72.576246],[46.370483,-72.556104],[46.325015,-72.529308]]}};
 const BASES={

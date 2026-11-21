@@ -932,7 +932,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <ul id="credits"></ul>
    <h3>Cartes</h3>
    <p>Fonds de carte : Esri (World Street Map, World Topographic Map, World Imagery, World Hillshade), avec les données de HERE, Garmin, Maxar, Earthstar Geographics et des contributeurs OpenStreetMap. Bibliothèque cartographique : Leaflet.</p>
-   <p>Le plan d’assurance-incendie de Charles E. Goad (levé en 1888, révisé en 1903) est calé sur la ville actuelle; le contour du feu de 1908 a été relevé sur ce même plan, à partir de la zone colorée de la reproduction conservée sur Wikimedia Commons. Les deux sont positionnés à partir de bâtiments toujours en place : la cathédrale, le séminaire, l’église St. James et le site de l’ancienne église paroissiale. L’écart résiduel est d’environ 20 mètres. Le plan de 1704 (Levasseur de Néré) est calé à partir de cinq repères : l’église paroissiale (place Pierre-Boucher), les croisements de l’ancienne rue Notre-Dame, aujourd’hui rue des Ursulines, avec les rues Saint-Louis et Saint-François-Xavier, le couvent des Ursulines et le Platon. La correspondance des rues de 1704 avec les rues actuelles est établie par Jacques Bertrand. L’écart résiduel va de 8 à 37 mètres, normal pour un plan dessiné à la main. Les autres plans anciens (1685, 1720, 1760, 1815) sont présentés tels quels, sans superposition.</p>
+   <p>Le plan d’assurance-incendie de Charles E. Goad (levé en 1888, révisé en 1903) est calé sur la ville actuelle; le contour du feu de 1908 a été relevé sur ce même plan, à partir de la zone colorée de la reproduction conservée sur Wikimedia Commons. Les deux sont positionnés à partir de bâtiments toujours en place : la cathédrale, le séminaire, l’église St. James et le site de l’ancienne église paroissiale. L’écart résiduel est d’environ 20 mètres. Le plan de 1704 (Levasseur de Néré) est calé sur trois croisements de rues relevés dans OpenStreetMap : ceux de l’ancienne rue Notre-Dame, aujourd’hui rue des Ursulines, avec les rues Saint-Louis, Saint-Jean et Saint-François-Xavier. La correspondance des rues de 1704 avec les rues actuelles est établie par Jacques Bertrand. Le plan n’est ni déformé ni étiré : il est seulement tourné, mis à l’échelle et déplacé. Les rues des Casernes, Saint-Pierre et la terrasse Turcotte, qui n’ont pas servi au calage, retombent sur leurs tracés de 1704 à une dizaine de mètres près. Les autres plans anciens (1685, 1720, 1760, 1815) sont présentés tels quels, sans superposition.</p>
    <p>L’emplacement de la halle du marché est tiré du plan Goad. Les autres lieux sont situés d’après le Répertoire du patrimoine culturel du Québec, la liste des lieux patrimoniaux de la Mauricie et les adresses publiques.</p>
   </div>
  </section>
@@ -994,7 +994,7 @@ const CHAP=[
      'Le fort, bâti entre 1634 et 1638, est refait en 1685; des bastions s’ajoutent en 1691, puis l’enceinte est agrandie en 1693 et en 1709. Tout est en bois : il n’y aura jamais de rempart de maçonnerie. Vers 1725, les habitants commencent à s’installer hors des murs; la palissade disparaît complètement en 1752.',
      'Conséquence durable : sans enceinte, la ville pourra s’étendre librement hors de son noyau.'],
   look:'Comparez la taille du bourg de 1685 aux îlots d’aujourd’hui : tout tient entre le Platon et la rue des Ursulines.'},
- {era:'1697 – 1760',h:'Un bourg à l’européenne',v:[46.3432,-72.5392,16.5],base:'carte',doc2:'p1704',pins:['boucher','armes','ursulines','rueursulines','stjames','niverville'],
+ {era:'1697 – 1760',h:'Un bourg à l’européenne',v:[46.34335,-72.53775,16.5],base:'carte',doc2:'p1704',pins:['boucher','armes','ursulines','rueursulines','stjames','niverville'],
   doc:['plan-1704.jpg','Plan de la ville, 1704 (Levasseur de Néré) : bourg, parcelles et enceinte projetée'],
   p:['Le bourg prend les traits d’un bourg européen : maisons de maçonnerie de deux ou trois étages, mitoyennes et alignées sur la rue, murs coupe-feu. Ces murs deviennent aussi un signe de prestige, parfois coiffés d’une double souche de cheminée dont une seule sert. Les portes cochères donnent accès aux cours; il n’y a pas encore de ruelles.',
      'Les rues du plan de 1704 sont encore là : la rue Notre-Dame de l’époque est l’actuelle rue des Ursulines, et les rues Saint-Louis, Saint-Jean et Saint-François-Xavier, comme la place d’Armes, occupent les mêmes emplacements. Les Ursulines arrivent en 1697; elles logent d’abord dans la maison des gouverneurs, sur le Platon. Au début du XVIIIe siècle, l’église paroissiale est rebâtie là où se trouve aujourd’hui la place Pierre-Boucher, qu’on appelle couramment place du Flambeau.',
@@ -1099,8 +1099,8 @@ const GLOSS=[
 <script>{
 const $=s=>document.querySelector(s);
 const PL=Object.fromEntries(LIEUX.map(l=>[l.id,l]));
-const DOCS={p1704:{file:'img/plan-1704-calage.jpg',label:'Plan de 1704',short:'1704',view:[46.3432,-72.5392,16.5],
-  geo:[[46.341669,-72.541739],[46.346897,-72.537569],[46.340174,-72.537796]]},
+const DOCS={p1704:{file:'img/plan-1704-calage.jpg',label:'Plan de 1704',short:'1704',view:[46.34335,-72.53775,16.5],
+  geo:[[46.342608,-72.541651],[46.346066,-72.536379],[46.340714,-72.539053]]},
  goad:{file:'img/plan-1903.jpg',label:'Plan Goad 1888-1903',short:'1888-1903',view:[46.3445,-72.5415,15.5],
   geo:[[46.337787,-72.576246],[46.370483,-72.556104],[46.325015,-72.529308]]}};
 const BASES={
