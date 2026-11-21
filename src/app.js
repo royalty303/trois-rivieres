@@ -2,29 +2,29 @@
 const $=s=>document.querySelector(s);
 const PL=Object.fromEntries(LIEUX.map(l=>[l.id,l]));
 const DOCS={goad:{file:'img/plan-1903.jpg',label:'Plan Goad 1888-1903',short:'1888-1903',view:[46.3445,-72.5415,15.5],
-  geo:[[46.337787,-72.576246],[46.370483,-72.556104],[46.325015,-72.529308]]},
- feu:{file:'img/plan-incendie.jpg',label:'Zone du feu de 1908',short:'Feu de 1908',view:[46.3432,-72.5418,16.5],
-  geo:[[46.339189,-72.549576],[46.350145,-72.542813],[46.33554,-72.538113]]}};
+  geo:[[46.337787,-72.576246],[46.370483,-72.556104],[46.325015,-72.529308]]}};
 const BASES={
  carte:['Carte','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}','https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}','Carte © Esri, HERE, Garmin, contributeurs OpenStreetMap'],
  satellite:['Satellite','https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',null,'Imagerie © Esri, Maxar, Earthstar Geographics'],
  relief:['Relief','https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',null,'Relief © Esri']};
+const src=(f,w=900)=>f.startsWith('c:')?'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f.slice(2))+'?width='+w:'img/'+f;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const popup=l=>`${l.img[0]?`<img src="img/${l.img[l.img.length-1][0]}" alt="">`:''}<small>${esc(l.d)}</small><b>${esc(l.n)}</b>${esc(l.t)}`;
+const popup=l=>`${l.img[0]?`<img src="${src(l.img[l.img.length-1][0],500)}" alt="">`:''}<small>${esc(l.d)}</small><b>${esc(l.n)}</b>${esc(l.t)}`;
 
-/* ---------- Composant carte : fond, document calé, rideau ou fondu ---------- */
-function MapView(box,el,withDocCtl){
- const st={base:'carte',doc:null,mode:'rideau',t:50};
+/* ---------- Composant carte : fond actuel, plan ancien en fondu, contour du feu ---------- */
+const FEU=[[46.339284,-72.542957],[46.338821,-72.542628],[46.338784,-72.542189],[46.339089,-72.54154],[46.339026,-72.540861],[46.339357,-72.540451],[46.339919,-72.539643],[46.340193,-72.539218],[46.34081,-72.538581],[46.341283,-72.538135],[46.341837,-72.537947],[46.342518,-72.537834],[46.343069,-72.537955],[46.343419,-72.538251],[46.343198,-72.539003],[46.343192,-72.539468],[46.343348,-72.539475],[46.344289,-72.538893],[46.344525,-72.539312],[46.344572,-72.540103],[46.34451,-72.540551],[46.344222,-72.540934],[46.343825,-72.540974],[46.343694,-72.541208],[46.343677,-72.541475],[46.342835,-72.542046],[46.341835,-72.542766],[46.342121,-72.543666],[46.341964,-72.543814],[46.341108,-72.544343],[46.340896,-72.54432],[46.340112,-72.544753],[46.339277,-72.544704],[46.339055,-72.544328],[46.33902,-72.543735],[46.33935,-72.543326]];
+function MapView(box,el){
+ const st={base:'carte',doc:null,t:70,feu:false};
  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,zoomSnap:.5,dragging:!L.Browser.mobile,tap:false}).setView([46.3435,-72.541],15);
  L.control.zoom({position:'topright'}).addTo(map);
  map.on('click',()=>{map.scrollWheelZoom.enable();map.dragging.enable()});
  const pane=map.createPane('doc');pane.style.zIndex=350;pane.style.pointerEvents='none';
  const img=document.createElement('img');img.className='docimg';img.alt='';pane.appendChild(img);
+ const feu=L.polygon(FEU,{color:'#c0281b',weight:3,dashArray:'8 6',fillColor:'#e0502a',fillOpacity:.13}).bindTooltip('Zone détruite par le feu du 22 juin 1908',{sticky:true});
  box.insertAdjacentHTML('beforeend',`<div class="ctl"><div class="row"><span class="lbl">FOND</span><div class="seg" data-k="base">${Object.entries(BASES).map(([k,b])=>`<button data-v="${k}">${b[0]}</button>`).join('')}</div></div>
-  <div class="row docrow"${withDocCtl?'':' hidden'}><span class="lbl">DOCUMENT</span><div class="seg" data-k="doc"><button data-v="">Aucun</button>${Object.entries(DOCS).map(([k,d])=>`<button data-v="${k}">${d.short}</button>`).join('')}</div></div>
-  <div class="row mixrow"><span class="lbl">COMPARER</span><div class="seg" data-k="mode"><button data-v="rideau">Rideau</button><button data-v="fondu">Fondu</button></div><input type="range" min="0" max="100" value="50" aria-label="Dosage entre le document et la ville actuelle"></div></div>
-  <div class="swipe"><span aria-hidden="true">⟷</span></div><div class="tag l"></div><div class="tag r"></div><p class="fail"></p>`);
- const ctl=box.querySelector('.ctl'),sw=box.querySelector('.swipe'),rng=ctl.querySelector('input'),fail=box.querySelector('.fail');
+  <div class="row"><span class="lbl">HIER</span><div class="seg" data-k="doc"><button data-v="">Aucun plan</button><button data-v="goad">Plan de 1888-1903</button></div><button class="feubtn" data-feu>Feu de 1908</button></div>
+  <div class="row mixrow"><span class="lbl">OPACITÉ</span><span class="sm">Aujourd’hui</span><input type="range" min="0" max="100" value="70" aria-label="Opacité du plan ancien"><span class="sm">1888</span></div></div><p class="fail"></p>`);
+ const ctl=box.querySelector('.ctl'),rng=ctl.querySelector('input'),fail=box.querySelector('.fail');
  L.DomEvent.disableClickPropagation(ctl);L.DomEvent.disableScrollPropagation(ctl);
  const tiles={};
  function tile(k){if(tiles[k])return tiles[k];const b=BASES[k],t=L.tileLayer(b[1],{maxZoom:20,maxNativeZoom:k==='relief'?16:19,attribution:b[3]});let ok=0,bad=0,alt=b[2];
@@ -36,29 +36,40 @@ function MapView(box,el,withDocCtl){
   if(!img.naturalWidth)return;
   const [p0,p1,p2]=d.geo.map(c=>map.latLngToLayerPoint(c)),w=img.naturalWidth,h=img.naturalHeight;
   img.style.display='block';img.style.transform=`matrix(${(p1.x-p0.x)/w},${(p1.y-p0.y)/w},${(p2.x-p0.x)/h},${(p2.y-p0.y)/h},${p0.x},${p0.y})`}
- function clip(){if(st.mode!=='rideau'||!st.doc){pane.style.clip='';return}
-  const nw=map.containerPointToLayerPoint([0,0]),se=map.containerPointToLayerPoint(map.getSize()),w=map.getSize().x*st.t/100;
-  pane.style.clip=`rect(${nw.y}px, ${nw.x+w}px, ${se.y}px, ${nw.x}px)`;sw.style.left=w+'px'}
  function apply(){
   for(const s of ctl.querySelectorAll('.seg'))for(const b of s.children)b.setAttribute('aria-pressed',String((st[s.dataset.k]||'')===b.dataset.v));
+  ctl.querySelector('[data-feu]').setAttribute('aria-pressed',String(st.feu));
   ctl.querySelector('.mixrow').hidden=!st.doc;rng.value=st.t;
-  box.classList.toggle('rideau',!!st.doc&&st.mode==='rideau');box.classList.toggle('fondu',!!st.doc&&st.mode==='fondu');
-  if(st.doc){const d=DOCS[st.doc];box.querySelector('.tag.l').textContent=st.mode==='rideau'?'◀ '+d.short:d.short+' · '+st.t+' %';box.querySelector('.tag.r').textContent=st.mode==='rideau'?'Aujourd’hui ▶':'Aujourd’hui · '+(100-st.t)+' %'}
   for(const k in tiles)if(k!==st.base&&map.hasLayer(tiles[k]))map.removeLayer(tiles[k]);
   if(!map.hasLayer(tile(st.base))){fail.classList.remove('on');tile(st.base).addTo(map)}
-  pane.style.opacity=st.mode==='fondu'?st.t/100:.92;draw();clip()}
- ctl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const k=b.parentElement.dataset.k;st[k]=b.dataset.v||null;if(k==='doc'&&st.doc)map.flyTo(DOCS[st.doc].view.slice(0,2),DOCS[st.doc].view[2],{duration:.8});apply()});
+  st.feu?feu.addTo(map):map.removeLayer(feu);
+  pane.style.opacity=st.t/100;draw()}
+ ctl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.hasAttribute('data-feu')){st.feu=!st.feu;if(st.feu)map.flyToBounds(feu.getBounds(),{padding:[60,60],duration:.8})}
+  else{const k=b.parentElement.dataset.k;st[k]=b.dataset.v||null;if(k==='doc'&&st.doc)map.flyTo(DOCS.goad.view.slice(0,2),DOCS.goad.view[2],{duration:.8})}
+  apply()});
  rng.addEventListener('input',()=>{st.t=+rng.value;apply()});
- map.on('zoomstart',()=>img.style.visibility='hidden');map.on('zoomend viewreset',()=>{draw();img.style.visibility='visible'});map.on('move zoom resize zoomend',clip);
- const grip=sw.querySelector('span');
- grip.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();grip.setPointerCapture(e.pointerId);map.dragging.disable();
-  const mv=ev=>{const r=box.getBoundingClientRect();st.t=Math.round(Math.max(0,Math.min(100,(ev.clientX-r.left)/r.width*100)));apply()};
-  const up=()=>{grip.removeEventListener('pointermove',mv);grip.removeEventListener('pointerup',up);if(!L.Browser.mobile)map.dragging.enable()};
-  grip.addEventListener('pointermove',mv);grip.addEventListener('pointerup',up)});
+ map.on('zoomstart',()=>img.style.visibility='hidden');map.on('zoomend viewreset',()=>{draw();img.style.visibility='visible'});
  apply();
  return {map,st,apply,set(o){Object.assign(st,o);apply()}};
 }
 const pinIcon=(l,old)=>L.divIcon({className:'pin'+(old?' old':''),html:`<i style="background:${PER[l.per][1]}"></i>`,iconSize:[22,22]});
+
+/* ---------- Mots expliqués ---------- */
+function gloss(texts){const used=new Set();return texts.map(t=>{let h=esc(t);
+ for(const [k,re,def] of GLOSS){if(used.has(k))continue;const m=h.match(re);if(!m)continue;
+  const i=m.index;if(h.lastIndexOf('<',i)>h.lastIndexOf('>',i))continue;
+  h=h.slice(0,i)+`<button class="term" data-g="${GLOSS.findIndex(g=>g[0]===k)}">${m[0]}</button>`+h.slice(i+m[0].length);used.add(k)}
+ return h})}
+const pop=document.createElement('div');pop.className='gpop';pop.setAttribute('role','dialog');pop.hidden=true;document.body.appendChild(pop);
+document.addEventListener('click',e=>{const b=e.target.closest('.term');
+ if(!b){if(!e.target.closest('.gpop'))pop.hidden=true;return}
+ const g=GLOSS[+b.dataset.g];pop.innerHTML=`<b>${esc(g[0])}</b><p>${esc(g[2])}</p>`;pop.hidden=false;
+ const r=b.getBoundingClientRect(),w=Math.min(320,innerWidth-24);pop.style.width=w+'px';
+ pop.style.left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2))+'px';
+ const below=r.bottom+10+pop.offsetHeight<innerHeight;pop.style.top=(below?r.bottom+8:r.top-pop.offsetHeight-8)+'px'});
+addEventListener('keydown',e=>{if(e.key==='Escape')pop.hidden=true});
+addEventListener('scroll',()=>pop.hidden=true,true);
 
 /* ---------- Visionneuse ---------- */
 const lb=$('#lb');
@@ -73,7 +84,7 @@ function chapter(i,fly=true){
  if(location.hash!=='#recit-'+(cur+1))history.replaceState(null,'','#recit-'+(cur+1));
  document.querySelectorAll('#steps button').forEach((b,j)=>{b.toggleAttribute('aria-current',j===cur);if(j===cur)b.setAttribute('aria-current','step');b.classList.toggle('seen',seen.has(j));if(j===cur)b.scrollIntoView({inline:'center',block:'nearest'})});
  const pins=(c.pins||[]).map(id=>PL[id]);
- $('#ptext').innerHTML=`<p class="count">Étape ${cur+1} sur ${CHAP.length} · ${esc(c.era)}</p><h2>${esc(c.h)}</h2>${c.p.map(x=>`<p>${esc(x)}</p>`).join('')}
+ $('#ptext').innerHTML=`<p class="count">Étape ${cur+1} sur ${CHAP.length} · ${esc(c.era)}</p><h2>${esc(c.h)}</h2>${gloss(c.p).map(x=>`<p>${x}</p>`).join('')}
   ${c.look?`<div class="look"><b>À OBSERVER SUR LA CARTE</b>${esc(c.look)}</div>`:''}
   ${pins.length?`<div class="chips">${pins.map(l=>`<button class="chip" data-fly="${l.id}"><i style="background:${PER[l.per][1]}"></i>${esc(l.n)}</button>`).join('')}</div>`:''}
   ${c.doc?`<figure><button data-zoom="img/${c.doc[0]}" data-cap="${esc(c.doc[1])}"><img src="img/${c.doc[0]}" alt="${esc(c.doc[1])}" loading="lazy"></button><figcaption>${esc(c.doc[1])} · touchez pour agrandir</figcaption></figure>`:''}`;
@@ -86,7 +97,7 @@ function chapter(i,fly=true){
   const m=L.marker(l.ll,{icon:pinIcon(l,!now),zIndexOffset:now?500:0,title:l.n}).bindPopup(popup(l),{maxWidth:260}).addTo(R.map);
   if(now&&pins.length<=4)m.bindTooltip(l.n,{permanent:true,direction:'right',offset:[8,0],className:'plbl'});
   rMarks.push(m)}
- R.set({base:c.base||'carte',doc:c.doc2||null,mode:'rideau',t:50});
+ R.set({base:c.base||'carte',doc:c.doc2==='goad'?'goad':null,feu:c.doc2==='feu',t:70});
  if(fly)R.map.flyTo(c.v.slice(0,2),c.v[2],{duration:1.1});else R.map.setView(c.v.slice(0,2),c.v[2]);
 }
 $('#steps').onclick=e=>{const b=e.target.closest('[data-i]');if(b)chapter(+b.dataset.i)};
@@ -108,14 +119,15 @@ function goPlace(id){const l=PL[id];if(!l||!l.ll)return;location.hash='#carte';s
 $('#plist').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
 
 /* ---------- Les lieux ---------- */
-let lf='all';
+let lf='all',skyMaps=[];
 $('#filters').innerHTML=`<button data-f="all" aria-pressed="true">Tous</button>${Object.entries(PER).map(([k,[n,c]])=>`<button data-f="${k}" aria-pressed="false"><i style="background:${c}"></i>${n}</button>`).join('')}<input type="search" id="q" placeholder="Chercher un lieu, une rue, une date…" aria-label="Chercher un lieu">`;
 const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 function renderGrid(){const q=norm($('#q').value||'');
  $('#grid').innerHTML=LIEUX.filter(l=>(lf==='all'||l.per===lf)&&norm(l.n+' '+l.t+' '+l.d).includes(q)).map(l=>`<article class="card">
-  ${l.img.length?`<div class="pics n${l.img.length}">${l.img.map(([f,y,c])=>`<button data-zoom="img/${f}" data-cap="${esc(l.n+' · '+y+' · '+c)}"><img src="img/${f}" alt="${esc(l.n+', '+y)}" loading="lazy"><span>${esc(y)}</span></button>`).join('')}</div>`:''}
-  <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${esc(l.t)}</p>
-  ${l.ll?`<button class="go" data-go="${l.id}">Voir sur la carte →</button>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>'}
+  ${l.sky?`<div class="sky" data-sky="${l.id}"><span>Vue du ciel aujourd’hui</span></div>`:''}${l.img.length?`<div class="pics n${l.img.length}">${l.img.map(([f,y,c])=>`<button data-zoom="${src(f,1600)}" data-cap="${esc(l.n+' · '+y+' · '+c)}"><img src="${src(f,700)}" alt="${esc(l.n+', '+y)}" loading="lazy"><span>${esc(y)}</span></button>`).join('')}</div>`:''}
+  <div class="cb"><p class="meta"><i style="background:${PER[l.per][1]}"></i>${esc(PER[l.per][0].toUpperCase())} · ${esc(l.d)}</p><h3>${esc(l.n)}</h3><p>${gloss([l.t])[0]}</p>
+  ${l.ll?`<button class="go" data-go="${l.id}">Voir sur la carte →</button>`:'<p class="nomap">Emplacement non cartographié</p>'}</div></article>`).join('')||'<p>Aucun lieu ne correspond.</p>';
+ skyMaps.forEach(m=>m.remove());skyMaps=[];if(window.L)document.querySelectorAll('[data-sky]').forEach(el=>{const l=PL[el.dataset.sky];const m=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView(l.ll,l.sky);L.tileLayer(BASES.satellite[1],{maxZoom:20,maxNativeZoom:19}).addTo(m);skyMaps.push(m)})}
 $('#filters').onclick=e=>{const b=e.target.closest('[data-f]');if(!b)return;lf=b.dataset.f;document.querySelectorAll('#filters [data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderGrid()};
 $('#q').addEventListener('input',renderGrid);
 $('#grid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
@@ -140,15 +152,16 @@ const REFS=[
 $('#refs').innerHTML=REFS.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('');
 const CRED=[['hero-1881.jpg','Vue à vol d’oiseau de Trois-Rivières en 1881, P.-F. Pinsonneault, BAnQ (domaine public)'],['plan-1685.jpg','Plan de Trois-Rivières, 1685, via Wikimedia Commons (domaine public)'],['plan-1704.jpg','Plan de la ville, 1704, Jacques Levasseur de Néré, via Wikimedia Commons (domaine public)'],['plan-1720.jpg','Plan du Platon, 1720, Chaussegros de Léry, Bibliothèque et Archives Canada (domaine public)'],['plan-1760.jpg','Plan de la ville, 1760, via Wikimedia Commons (domaine public)'],['plan-1781.jpg','Trois-Rivières et le lac Saint-Pierre, 1781, J. F. W. Des Barres, BAnQ (domaine public)'],['plan-1815.jpg','La ville en 1815, dans Benjamin Sulte, Histoire des Canadiens-Français, 1882, British Library (domaine public)'],['plan-1861.jpg','Carte de l’Amirauté no 2830a, 1861, McGill Library (domaine public)'],['plan-1903.jpg','Plan d’assurance-incendie, Charles E. Goad, 1888 révisé en 1903, BAnQ (domaine public)'],['plan-incendie.jpg','Périmètre du feu de 1908 sur le plan Goad, Wikimedia Commons (domaine public)'],
  ...LIEUX.flatMap(l=>l.img.map(([f,y,c])=>[f,`${l.n}, ${y} : ${c}`])),['forges-2006.jpg','Rue des Forges, 2006 : Nicholas Wang, CC BY-SA 2.0']];
-$('#credits').innerHTML=CRED.map(([f,t])=>`<li>${esc(t)}</li>`).join('');
+$('#credits').innerHTML=CRED.map(([f,t])=>`<li>${f.startsWith('c:')?`<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.slice(2).replace(/ /g,'_'))}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t)}</li>`).join('')+'<li>Images de Wikimedia Commons affichées depuis Commons; cliquez sur un crédit pour voir la fiche, l’auteur et la licence.</li>';
 
 /* ---------- Navigation : une vue à la fois, l’onglet actif indique où l’on est ---------- */
 function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','sources'].includes(v)?v:'accueil';
  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
  document.querySelectorAll('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+view)||0);
  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.setAttribute('aria-current','page')});
- if(view==='recit'){if(!R){R=MapView($('#mbR'),'mapR',false)}R.map.invalidateSize();chapter(n?(+n-1):cur,false)}
- if(view==='carte'){if(!C){C=MapView($('#mbC'),'mapC',true);C.set({doc:'goad'});C.map.setView(DOCS.goad.view.slice(0,2),DOCS.goad.view[2]);
+ if(view==='recit'){if(!R){R=MapView($('#mbR'),'mapR')}R.map.invalidateSize();chapter(n?(+n-1):cur,false)}
+ if(view==='lieux')skyMaps.forEach(m=>m.invalidateSize());
+ if(view==='carte'){if(!C){C=MapView($('#mbC'),'mapC');C.set({doc:'goad'});C.map.setView(DOCS.goad.view.slice(0,2),DOCS.goad.view[2]);
    for(const l of LIEUX)if(l.ll)cMarks[l.id]=L.marker(l.ll,{icon:pinIcon(l,false),title:l.n}).bindPopup(popup(l),{maxWidth:260});syncMarks()}
   C.map.invalidateSize()}
  if(view!=='recit'||!n)scrollTo(0,0)}

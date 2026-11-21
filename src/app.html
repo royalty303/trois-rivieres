@@ -118,6 +118,16 @@ figcaption{font-size:.78rem;color:var(--muted);margin-top:7px}
 .plist button:hover{background:var(--wash)}
 .plist i{width:10px;height:10px;border-radius:50%;margin-top:7px;flex:none}
 .plist small{display:block;color:var(--muted);font-size:.76rem}
+.feubtn{border:1.5px dashed #c0281b;background:#fff;color:#a01d12;padding:6px 10px;font-size:.8rem;font-weight:600;min-height:34px}
+.feubtn[aria-pressed=true]{background:#c0281b;border-style:solid;color:#fff}
+.ctl .sm{font-size:.72rem;color:var(--muted)}
+.term{border:0;background:none;padding:0;font:inherit;color:inherit;text-decoration:underline dotted var(--accent);text-decoration-thickness:2px;text-underline-offset:3px;cursor:help}
+.term:hover{color:var(--accent)}
+.gpop{position:fixed;z-index:3000;background:var(--ink);color:#fff;padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.9rem;line-height:1.5}
+.gpop b{display:block;font-family:var(--serif);font-weight:400;font-size:1.25rem;margin-bottom:4px;color:#f0c3ad}
+.gpop p{margin:0}
+.sky{position:relative;height:190px;isolation:isolate;background:#dde4e1}
+.sky span{position:absolute;left:8px;top:8px;z-index:500;background:#fff;font-size:.72rem;font-weight:700;padding:2px 7px}
 /* lieux */
 .wrap{width:min(1200px,calc(100% - 48px));margin:0 auto}
 .lieux{padding:48px 0 80px}
@@ -205,7 +215,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <p class="lead">Un poste de traite sur une terrasse, un bourg sans remparts, des faubourgs, le feu, le papier, la ville moderne. Presque quatre siècles se lisent encore dans les rues du centre.</p>
    <div class="doors">
     <a class="door" href="#recit"><b>Suivre le récit</b><span>13 étapes, de la confluence à aujourd’hui. La carte se construit à mesure.</span></a>
-    <a class="door" href="#carte"><b>Comparer sur la carte</b><span>Le plan de 1888 et la zone du feu de 1908 posés sur la ville actuelle.</span></a>
+    <a class="door" href="#carte"><b>Comparer sur la carte</b><span>Le plan de 1888 en fondu sur la ville actuelle, et le contour du feu de 1908.</span></a>
     <a class="door" href="#lieux"><b>Retrouver un lieu</b><span id="nLieux">Tous les lieux du récit, avec leurs photos d’hier et d’aujourd’hui.</span></a>
    </div>
   </div><span class="hero-credit">Vue à vol d’oiseau de Trois-Rivières en 1881 · BAnQ</span></div>
@@ -227,7 +237,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <div class="mapbox" id="mbC"><div class="lmap" id="mapC"></div></div>
    <aside class="side">
     <h2>Hier sur aujourd’hui</h2>
-    <p class="sub">Choisissez un document, puis faites glisser le rideau. Touchez un lieu pour le situer.</p>
+    <p class="sub">Affichez le plan de 1888 et réglez son opacité, ou tracez le contour du feu de 1908. Touchez un lieu pour le situer.</p>
     <div class="legend" id="legend"></div>
     <ul class="plist" id="plist"></ul>
    </aside>
@@ -255,7 +265,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <ul id="credits"></ul>
    <h3>Cartes</h3>
    <p>Fonds de carte : Esri (World Street Map, World Topographic Map, World Imagery, World Hillshade), avec les données de HERE, Garmin, Maxar, Earthstar Geographics et des contributeurs OpenStreetMap. Bibliothèque cartographique : Leaflet.</p>
-   <p>Le plan d’assurance-incendie de Charles E. Goad (levé en 1888, révisé en 1903) et le périmètre du feu de 1908 sont calés sur la ville actuelle à partir de bâtiments toujours en place : la cathédrale, le séminaire, l’église St. James et le site de l’ancienne église paroissiale. L’écart résiduel est d’environ 20 mètres. Les plans plus anciens (1685, 1704, 1720, 1760, 1815) sont des dessins à l’échelle et à l’orientation propres à chacun; ils sont présentés tels quels, sans superposition.</p>
+   <p>Le plan d’assurance-incendie de Charles E. Goad (levé en 1888, révisé en 1903) est calé sur la ville actuelle; le contour du feu de 1908 a été relevé sur ce même plan, à partir de la zone colorée de la reproduction conservée sur Wikimedia Commons. Les deux sont positionnés à partir de bâtiments toujours en place : la cathédrale, le séminaire, l’église St. James et le site de l’ancienne église paroissiale. L’écart résiduel est d’environ 20 mètres. Les plans plus anciens (1685, 1704, 1720, 1760, 1815) sont des dessins à l’échelle et à l’orientation propres à chacun; ils sont présentés tels quels, sans superposition.</p>
    <p>L’emplacement de la halle du marché est tiré du plan Goad. Les autres lieux sont situés d’après le Répertoire du patrimoine culturel du Québec, la liste des lieux patrimoniaux de la Mauricie et les adresses publiques.</p>
   </div>
  </section>
