@@ -143,6 +143,28 @@ renderGrid();$('#nLieux').textContent=`${LIEUX.length} lieux, avec leurs photos 
 
 /* ---------- Sources ---------- */
 const REFS=[
+ ['Trois-Rivières Numérique, Église Saint-Philippe de Trois-Rivières','https://troisrivieresnumerique.ca/documents/eglise-saint-philippe-de-trois-rivieres-i/'],
+ ['Répertoire du patrimoine culturel du Québec, École Saint-Philippe (érection de la paroisse en 1909)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?methode=consulter&id=173747&type=bien'],
+ ['Radio-Canada, L’intrigante pierre angulaire de l’église Saint-Philippe (2022)','https://ici.radio-canada.ca/nouvelle/1856918/pierre-angulaire-demolition-eglise'],
+ ['Ville de Trois-Rivières, fiche patrimoniale de l’église Notre-Dame-des-Sept-Allégresses (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Notre-Dame-des-Sept-Allegresses.pdf'],
+ ['Ville de Trois-Rivières, fiche patrimoniale de l’église du Très-Saint-Sacrement (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Tres-Saint-Sacrement.pdf'],
+ ['Le Nouvelliste, 1987 : arrivée des Frères des écoles chrétiennes à Trois-Rivières en 1844 (BAnQ)','https://collections.banq.qc.ca/document/s/t/SuTP3vSK30Z3fQOBrrAUvQ'],
+ ['ArchDaily, Amphithéâtre Cogeco / Atelier Paul Laurendeau','https://www.archdaily.com/884711/amphitheatre-cogeco-atelier-paul-laurendeau'],
+ ['Infrastructure Canada, inauguration de l’amphithéâtre de Trois-Rivières (2015)','https://www.canada.ca/fr/nouvelles/archive/2015/07/ministres-lebel-girard-participent-inauguration-nouvel-amphitheatre-trois-rivieres.html'],
+ ['Amphithéâtre Cogeco, le Cirque du Soleil à l’amphithéâtre (2015)','https://www.amphitheatrecogeco.com/en/news/the-corporation-de-l-amphitheatre-de-trois-rivieres-welcomes-cirque-du-soleil-this-summer'],
+ ['L’Encyclopédie canadienne, Cap-de-la-Madeleine','https://www.thecanadianencyclopedia.ca/fr/article/cap-de-la-madeleine'],
+ ['Sanctuaire Notre-Dame-du-Cap, Historique','https://www.sanctuaire-ndc.ca/en/?p=648'],
+ ['Ville de Trois-Rivières, fiche du Petit Sanctuaire et de la basilique Notre-Dame-du-Cap (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Chapelle-du-Sanctuaire-et-Basilique.pdf'],
+ ['Dictionnaire biographique du Canada, Pierre Boucher','https://www.biographi.ca/en/bio/boucher_pierre_2E.html'],
+ ['Dictionnaire biographique du Canada, Pierre Gaultier de Varennes et de La Vérendrye','https://www.biographi.ca/en/bio/gaultier_de_varennes_et_de_la_verendrye_pierre_3E.html'],
+ ['Dictionnaire biographique du Canada, Louis-François Laflèche','https://www.biographi.ca/en/bio/lafleche_louis_francois_12E.html'],
+ ['Dictionnaire biographique du Canada, Benjamin Sulte','https://www.biographi.ca/en/bio/sulte_benjamin_15E.html'],
+ ['Parcs Canada, Benjamin Sulte (1841-1923)','https://parks.canada.ca/culture/cseh-twih/202438'],
+ ['L’Encyclopédie canadienne, Maurice Duplessis','https://thecanadianencyclopedia.ca/fr/article/maurice-le-noblet-duplessis'],
+ ['L’Encyclopédie canadienne, Jean Béliveau','https://www.thecanadianencyclopedia.ca/fr/article/jean-beliveau'],
+ ['L’Encyclopédie canadienne, Gérald Godin','https://www.thecanadianencyclopedia.ca/fr/article/gerald-godin'],
+ ['Université d’Ottawa, Daniel Lamarre (doctorat honorifique)','https://www.uottawa.ca/notre-universite/recteur/doctorats-honorifiques/lamarre-daniel'],
+ ['Cirque du Soleil, nomination de Mark Cornell (2025)','https://www.cirquedusoleil.com/press/news/2025/cirque-du-soleil-announces-the-appointment-of-mark-cornell'],
  ['Ville de Trois-Rivières, Survol historique','https://www.v3r.net/culture/histoire-et-patrimoine/histoire-de-trois-rivieres'],
  ['Répertoire du patrimoine culturel du Québec, Site patrimonial de Trois-Rivières (déclaré en 1964)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?id=93531&methode=consulter&type=bien'],
  ['Répertoire, Hôtel de ville et centre culturel de Trois-Rivières (prix Massey 1971, hôtels de ville successifs)','https://www.patrimoine-culturel.gouv.qc.ca/rpcq/detail.do?id=174361&methode=consulter&type=bien'],
@@ -163,8 +185,14 @@ const CRED=[['hero-1881.jpg','Vue à vol d’oiseau de Trois-Rivières en 1881, 
  ...LIEUX.flatMap(l=>l.img.map(([f,y,c])=>[f,`${l.n}, ${y} : ${c}`])),['forges-2006.jpg','Rue des Forges, 2006 : Nicholas Wang, CC BY-SA 2.0']];
 $('#credits').innerHTML=CRED.map(([f,t])=>`<li>${f.startsWith('c:')?`<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.slice(2).replace(/ /g,'_'))}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t)}</li>`).join('')+'<li>Images de Wikimedia Commons affichées depuis Commons; cliquez sur un crédit pour voir la fiche, l’auteur et la licence.</li>';
 
+/* ---------- Personnages ---------- */
+const initials=n=>n.replace(/^Mgr /,'').split(/[ -]/).filter(w=>/^[A-ZÉ]/.test(w)).map(w=>w[0]).slice(0,2).join('');
+$('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><div class="mono" aria-hidden="true">${initials(g.n)}</div><p class="dates">${esc(g.v)}</p><h3>${esc(g.n)}</h3><p class="orig">${esc(g.o)}</p><p>${gloss([g.t])[0]}</p>${g.p&&PL[g.p]&&PL[g.p].ll?`<button class="go" data-go="${g.p}">${esc(PL[g.p].n)} sur la carte →</button>`:''}</div></article>`).join('');
+
+$('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
+
 /* ---------- Navigation : une vue à la fois, l’onglet actif indique où l’on est ---------- */
-function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','sources'].includes(v)?v:'accueil';
+function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','gens','sources'].includes(v)?v:'accueil';
  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
  document.querySelectorAll('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+view)||0);
  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.setAttribute('aria-current','page')});

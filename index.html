@@ -701,7 +701,7 @@ main{padding-top:var(--hd)}
 .hero h1{font-size:clamp(3.4rem,8vw,7.5rem);max-width:820px;margin-bottom:22px}
 .hero h1 em{color:#e7b59b}
 .hero p.lead{max-width:470px;font-size:1.1rem;color:#e3e8e7;margin:0 0 34px}
-.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:980px}
+.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:1180px}
 .door{display:block;text-decoration:none;background:rgba(255,255,255,.96);color:var(--ink);padding:20px 22px;border-top:4px solid var(--accent);transition:transform .15s}
 .door:hover{transform:translateY(-3px)}
 .door b{display:block;font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.1;margin-bottom:6px}
@@ -791,8 +791,8 @@ figcaption{font-size:.78rem;color:var(--muted);margin-top:7px}
 .sky span{position:absolute;left:8px;top:8px;z-index:500;background:#fff;font-size:.72rem;font-weight:700;padding:2px 7px}
 /* lieux */
 .wrap{width:min(1200px,calc(100% - 48px));margin:0 auto}
-.lieux{padding:48px 0 80px}
-.lieux h2,.sources h2{font-size:clamp(2.4rem,4.5vw,3.6rem);margin-bottom:12px}
+.lieux,.gens{padding:48px 0 80px}
+.lieux h2,.gens h2,.sources h2{font-size:clamp(2.4rem,4.5vw,3.6rem);margin-bottom:12px}
 .intro{color:var(--muted);max-width:640px;margin:0 0 26px}
 .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:26px}
 .filters button{border:1px solid var(--line);background:#fff;padding:8px 13px;font-size:.85rem;display:inline-flex;align-items:center;gap:7px}
@@ -814,6 +814,10 @@ figcaption{font-size:.78rem;color:var(--muted);margin-top:7px}
 .card p{font-size:.92rem;margin:0 0 14px}
 .card .go{margin-top:auto;align-self:flex-start;border:1px solid var(--ink);background:#fff;padding:8px 13px;font-size:.84rem;font-weight:600}
 .card .go:hover{background:var(--ink);color:#fff}
+.gcard .cb{padding:22px 22px 20px}
+.gcard .mono{width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:1.45rem;margin-bottom:14px}
+.gcard .dates{font-size:.8rem;font-weight:700;letter-spacing:.06em;color:var(--accent);margin:0 0 4px}
+.gcard .orig{font-size:.82rem;color:var(--muted);margin:-4px 0 12px}
 .card .nomap{margin-top:auto;font-size:.78rem;color:var(--muted)}
 /* sources */
 .sources{padding:48px 0 80px}
@@ -871,6 +875,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
   <a href="#recit"><svg viewBox="0 0 24 24"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/></svg>Le récit</a>
   <a href="#carte"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>La carte</a>
   <a href="#lieux"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Les lieux</a>
+  <a href="#gens"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.3c3 .1 5.5 2.6 5.5 5.7"/></svg>Personnages</a>
   <a href="#sources"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>Sources</a>
  </nav>
 </header>
@@ -884,6 +889,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
     <a class="door" href="#recit"><b>Suivre le récit</b><span>13 étapes, de la confluence à aujourd’hui. La carte se construit à mesure.</span></a>
     <a class="door" href="#carte"><b>Comparer sur la carte</b><span>Les plans de 1704 et de 1888 en fondu sur la ville actuelle, et le contour du feu de 1908.</span></a>
     <a class="door" href="#lieux"><b>Retrouver un lieu</b><span id="nLieux">Tous les lieux du récit, avec leurs photos d’hier et d’aujourd’hui.</span></a>
+    <a class="door" href="#gens"><b>Rencontrer des Trifluviens</b><span>De Pierre Boucher à Jean Béliveau, ceux qui ont marqué la ville.</span></a>
    </div>
   </div><span class="hero-credit">Vue à vol d’oiseau de Trois-Rivières en 1881 · BAnQ</span></div>
  </section>
@@ -921,6 +927,15 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
   </div>
  </section>
 
+ <section class="view" id="v-gens">
+  <div class="wrap gens">
+   <p class="eyebrow">PERSONNAGES</p>
+   <h2>Figures trifluviennes</h2>
+   <p class="intro">Nés à Trois-Rivières, ou venus y laisser leur marque, du gouverneur de la Nouvelle-France au patron du Cirque du Soleil. Quand un lieu de la ville leur est lié, un bouton le situe sur la carte.</p>
+   <div class="grid" id="ggrid"></div>
+  </div>
+ </section>
+
  <section class="view" id="v-sources">
   <div class="wrap sources">
    <p class="eyebrow">SOURCES</p>
@@ -947,7 +962,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 <script>/* ---------- Lieux : un seul enregistrement par lieu, chaque image n’apparaît qu’une fois ---------- */
 const PER={nf:['Régime français','#a5422c'],xix:['XIXe siècle','#b8862b'],ind:['Ville industrielle','#2f6f7a'],mod:['Ville moderne','#5b7d4f']};
 const LIEUX=[
- {id:'platon',n:'Le Platon',ll:[46.3420,-72.5381],per:'nf',ch:1,d:'1634',t:'Butte naturelle qui domine le fleuve. Le fort y est construit entre 1634 et 1638. En 1693, Claude de Ramezay y bâtit la maison des gouverneurs; les Ursulines y logent de 1697 à 1700. Agrandie en 1723 par Chaussegros de Léry, elle devient caserne militaire de 1765 à 1852 (d’où la rue des Casernes), puis abrite de 1860 à 1874 le Collège des Trois-Rivières, berceau du Séminaire Saint-Joseph. Le feu de 1908 la détruit. Lieu historique national du Fort-Trois-Rivières.',img:[['c:Maison des Gouverneurs de Trois-Rivières 1908.jpg','1908','La maison des gouverneurs sur le Platon après le feu · P.-F. Pinsonneault, domaine public'],['c:Lieu historique national Fort-Trois-Rivières.JPG','2011','Fralambert, CC BY-SA 3.0']]},
+ {id:'platon',n:'Le Platon',ll:[46.3420,-72.5381],per:'nf',ch:1,d:'1634',t:'Butte naturelle qui domine le fleuve. Le fort y est construit entre 1634 et 1638. En 1693, Claude de Ramezay y bâtit la maison des gouverneurs; les Ursulines y logent de 1697 à 1700. Agrandie en 1723 par Chaussegros de Léry, elle devient caserne militaire de 1765 à 1852 (d’où la rue des Casernes), puis abrite de 1860 à 1874 le Collège des Trois-Rivières, berceau du Séminaire Saint-Joseph. Le feu de 1908 la détruit. Lieu historique national du Fort-Trois-Rivières.',img:[['c:Maison des Gouverneurs de Trois-Rivières 1908.jpg','1908','La maison des gouverneurs sur le Platon après le feu · P.-F. Pinsonneault, domaine public'],['c:Le Sieur de Laviolette (19679840530).jpg','2015','Le parc du Platon et le monument à Laviolette · Robert Cutts, CC BY-SA 2.0']]},
  {id:'boucher',n:'Place Pierre-Boucher (place du Flambeau)',ll:[46.34284,-72.5395],per:'nf',ch:2,d:'Début XVIIIe s. · 1908 · 1934',t:'Ici s’élevait l’église de la paroisse de l’Immaculée-Conception, la troisième bâtie à cet endroit, au début du XVIIIe siècle. Après la construction de la cathédrale (1858), elle sert de chapelle. Le feu de 1908 l’emporte; quelques œuvres sont sauvées, dont un tableau du frère Luc. Elle n’est jamais rebâtie : son terrain sert à élargir la rue et devient la place Pierre-Boucher. En 1934, pour le 300e anniversaire de la ville, on y érige le Flambeau, « monument aux héros de la petite patrie », dessiné par l’étudiant Henri-Georges Paulay. Le réaménagement récent marque au sol l’emplacement de l’église.',img:[['c:Premiere eglise paroissiale en pierre de Trois-Rivieres incendiee en 1908.jpg','1908','L’église paroissiale après l’incendie · domaine public'],['c:Place Pierre-Boucher, Trois-Rivières - Sept 2014.jpg','2014','AccroDuWeb, CC0']]},
  {id:'armes',n:'Place d’Armes',ll:[46.3430,-72.5381],per:'nf',ch:2,d:'XVIIe – XVIIIe siècle',t:'Au cœur du bourg ancien, sur la terrasse, face aux maisons de la rue des Ursulines.',img:[['c:Place D\'Armes, Postal Card, Three Rivers, P.Q.jpg','début XXe','Carte postale, domaine public'],['c:Place d\'Armes - Trois-Rivières 01.JPG','2011','Fralambert, CC BY 3.0']]},
  {id:'ursulines',n:'Monastère des Ursulines',ll:[46.3442,-72.5362],per:'nf',ch:2,d:'Depuis 1697',t:'Les Ursulines s’établissent en 1697 avec une école et un hôpital. L’agrandissement victorien a été construit en retrait : il préserve le mur pignon et son cadran solaire, un des motifs les plus photographiés de la ville. Le jardin devant le couvent, devenu public, garde l’ouverture vers le fleuve.',img:[['monastere-1928.jpg','1928','Edgar Gariépy, Archives de Montréal'],['c:Monastère des Ursulines, Trois-Rivières, South view 20170411 1.jpg','2017','DXR, CC BY-SA 4.0']]},
@@ -960,13 +975,15 @@ const LIEUX=[
  {id:'prison',n:'Vieille prison',ll:[46.3450,-72.5393],per:'xix',ch:6,d:'1816 – 1822',t:'Conçue par François Baillairgé, construite à l’écart du bourg; la ville l’a rejointe. Classée en 1978. Elle reste aujourd’hui isolée par une grande étendue de stationnement.',img:[['prison-2011.jpg','2011','Fralambert, CC BY-SA 3.0']]},
  {id:'cathedrale',n:'Cathédrale de l’Assomption',ll:[46.34426,-72.54275],per:'xix',ch:6,d:'XIXe siècle',t:'Avec l’évêché et le séminaire, elle prolonge le périmètre institutionnel autour du square.',img:[['c:Assumption Cathedral Trois Rivieres.jpg','2017','Ymblanter, CC BY-SA 4.0']]},
  {id:'champlain',n:'Parc Champlain',ll:[46.34359,-72.54264],per:'xix',ch:6,d:'Le square',t:'L’ancien square, face à la cathédrale et à l’hôtel de ville. Remanié dans les années 1960 avec le nouveau centre civique.',img:[['c:Parc-champlain 01 trois-rivieres-vers-1894.jpg','vers 1894','Auteur inconnu, domaine public'],['c:Parc Champlain.JPG','2011','Fralambert, CC BY-SA 3.0']]},
- {id:'hdv',n:'Hôtel de ville',ll:[46.34356,-72.54298],per:'mod',ch:6,d:'1872 · 1910 · 1967',t:'La municipalité naît en 1845. Le conseil siège d’abord au palais de justice, puis dans une salle au-dessus du marché de la rue des Forges. Le premier hôtel de ville est construit en 1872 (Bourgeau et Leprohon), à l’angle des rues Royale et Alexandre, aujourd’hui Radisson, face au parc Champlain. Il brûle en octobre 1910 et il est rebâti en brique, avec un haut campanile. L’actuel, inauguré en 1967 (Leclerc et Villemure, Denoncourt et Denoncourt), reçoit le prix Massey en 1971, la plus haute distinction canadienne en architecture.',img:[['hotel-1875.jpg','1875','Anonyme, domaine public'],['hotel-1919.jpg','1919','Anonyme, Musée McCord'],['hotel-2015.jpg','2015','FoufouneEl3ctriK, CC0']]},
+ {id:'hdv',n:'Hôtel de ville',ll:[46.34356,-72.54298],per:'mod',ch:6,d:'1872 · 1910 · 1967',t:'La municipalité naît en 1845. Le conseil siège d’abord au palais de justice, puis dans une salle au-dessus du marché de la rue des Forges. Le premier hôtel de ville est construit en 1872 (Bourgeau et Leprohon), à l’angle des rues Royale et Alexandre, aujourd’hui Radisson, face au parc Champlain. Il brûle en octobre 1910 et il est rebâti en brique, avec un haut campanile. L’actuel, inauguré en 1967 (Leclerc et Villemure, Denoncourt et Denoncourt), reçoit le prix Massey en 1971, la plus haute distinction canadienne en architecture.',img:[['hotel-1875.jpg','1875','Anonyme, domaine public'],['c:Tr 085.jpg','après 1910','Le deuxième hôtel de ville, en brique, et son campanile · carte postale, International Post Card Co., domaine public'],['hotel-2015.jpg','2015','FoufouneEl3ctriK, CC0']]},
  {id:'duplessis',n:'Maison Maurice-Duplessis',ll:[46.343778,-72.541139],per:'xix',ch:6,d:'Vers 1895',t:'240, rue Bonaventure. Maurice Duplessis (1890-1959) y vit jusqu’à sa mort et installe son bureau au sous-sol. Une des maisons bourgeoises de brique du bourg élargi.',img:[['duplessis-maison.jpg','2017','Fralambert, CC BY-SA 4.0']]},
  {id:'seminaire',n:'Séminaire Saint-Joseph',ll:[46.34905,-72.5444],per:'xix',ch:6,d:'XIXe siècle',t:'Pièce du pôle religieux et scolaire; l’hôpital s’installe en face. Plusieurs maisons bourgeoises voisines ont été démolies pour le stationnement de l’hôpital.',img:[['c:Séminaire à tourelles.jpg','début XXe','Fonds du Séminaire Saint-Joseph, domaine public'],['c:SSJTrois-Rivières.jpg','2014','Robert Cutts, CC BY 2.0']]},
- {id:'ecole',n:'École des Frères',ll:null,per:'xix',ch:6,d:'Vers 1881',t:'Au coin des rues Saint-Pierre et Saint-François-Xavier, dans le bourg élargi.',img:[['ecole-1881.jpg','vers 1881','Auteur inconnu, domaine public']]},
+ {id:'ecole',n:'École des Frères',ll:[46.34419,-72.53795],per:'xix',ch:6,d:'1844 · vers 1881',t:'Les Frères des écoles chrétiennes arrivent à Trois-Rivières en 1844, à la demande du vicaire général Thomas Cooke. Trois frères s’installent à l’école Sainte-Ursule, rue Saint-Pierre; dès la rentrée d’octobre, leurs trois classes comptent 280 élèves. Jusqu’en 1921, tous les frères de la ville logent dans leur maison principale, rue Saint-Pierre. Benjamin Sulte y fait ses premières classes. Au coin des rues Saint-Pierre et Saint-François-Xavier, un monument à Jean-Baptiste de La Salle, fondateur de la communauté, est érigé en 1984 par les anciens élèves.',img:[['ecole-1881.jpg','vers 1881','Auteur inconnu, domaine public']]},
  {id:'cip',n:'Boréalis (ancienne usine de filtration de la CIP)',ll:[46.3489,-72.5325],per:'ind',ch:8,d:'1920 – 2000',t:'La Canadian International Paper s’installe au confluent en 1920. Dès 1924, avec l’ajout de quatre machines, c’est la plus importante usine de papier journal au monde. Après la fermeture de 2000, le complexe est démoli; seule l’usine de filtration, construite en 1920-1921, est conservée. Elle abrite aujourd’hui Boréalis, musée de l’industrie papetière.',img:[['cip-1930.jpg','vers 1930','CIEQ, collection René-Hardy'],['borealis-2011.jpg','2011','Fralambert, CC BY-SA 3.0']]},
  {id:'wabasso',n:'Wabasso Cotton',ll:null,per:'ind',ch:8,d:'1907 – 1985',t:'Les lignes à haute tension de la Shawinigan Water & Power, arrivées en 1906-1907, attirent les industries gourmandes en énergie. La filature Wabasso est fondée en 1907 par Charles Ross Whitehead, déjà propriétaire de la Montmorency Cotton Mills, rue Saint-Maurice, entre les rues Saint-François-Xavier et Saint-Paul. À sa fermeture en 1985, 1 665 personnes perdent leur emploi. Le bâtiment de 1910 abrite aujourd’hui le Centre d’entrepreneuriat Alphonse-Desjardins.',img:[['wabasso-1930.jpg','vers 1930','Musée McCord Stewart, domaine public']]},
  {id:'cecile',n:'Église Sainte-Cécile',ll:[46.3486,-72.5379],per:'ind',ch:8,d:'1913 – 1914',t:'Paroisse créée en 1912 pour le quartier ouvrier né autour de la Wabasso : immeubles à logements avec ruelles pour les ouvriers, maisons jumelées pour les cadres.',img:[['c:Église Sainte-Cécile de Trois-Rivières BAnQ P748S1P2110.jpg','vers 1920','BAnQ, domaine public'],['c:Eglise Saint Cecile.jpg','2015','Robert Cutts, CC BY 2.0']]},
+ {id:'stphilippe',n:'Église Saint-Philippe',ll:[46.339416,-72.547791],per:'ind',ch:7,d:'1909 – 2002',t:'Un mois après le feu de 1908, les francs-tenanciers du quartier Saint-Philippe, l’un des quatre quartiers de la ville depuis 1857, demandent une paroisse. Érigée le 1er mai 1909, c’est la première à se détacher de la paroisse mère de l’Immaculée-Conception. L’église est inaugurée le 7 novembre suivant; dans ses fondations, on place la pierre angulaire retrouvée dans les ruines de l’église paroissiale incendiée. La paroisse est supprimée en 2002. Lors de la démolition de l’église, la pierre refait surface : on l’ouvre devant la presse en janvier 2012.',img:[['c:Église Saint-Philippe de Trois-Rivières BAnQ P748S1P2108.jpg','1925','BAnQ, domaine public'],['c:Église Saint-Philippe, Trois-Rivières - façade extérieure 11-d.na.rel-78-4444.jpg','vers 1978','Luc Noppen, Groupe de recherche en art du Québec, CC BY-SA 4.0']]},
+ {id:'ndsa',n:'Église Notre-Dame-des-Sept-Allégresses',ll:[46.351563,-72.547292],per:'ind',ch:8,d:'1911 · 1913 – 1914',t:'1285, rue Saint-François-Xavier. Troisième paroisse de la ville, érigée en 1911 et confiée aux Franciscains, présents à Trois-Rivières depuis la fin du XIXe siècle. Elle témoigne de la croissance rapide du quartier Notre-Dame, au nord du centre, au tournant du XXe siècle. Les fidèles prient d’abord dans la chapelle Saint-Antoine du monastère, rue Saint-Maurice; l’église est bâtie en 1913-1914. En 1926, la paroisse du Très-Saint-Sacrement se détache de la sienne, sur le coteau.',img:[['c:L\'Eglise Notre-Dame des Sept Allegresses of Trois-Rivières.jpg','2015','Robert Cutts, CC BY 2.0']]},
  {id:'thompson',n:'Salle J.-Antonio-Thompson',ll:[46.34236,-72.54357],per:'ind',ch:12,d:'1927 – 1928',t:'L’ancien Capitol (architecte D. J. Crighton, décor d’Emmanuel Briffa), sur la rue des Forges rebâtie. Racheté et restauré par la Ville, il est devenu l’une des grandes salles de spectacle de la région.',img:[['c:Théâtre Capitol c.1935.jpg','vers 1935','Le Capitol · auteur inconnu, domaine public'],['c:Salle J-A Thompson.jpg','2021','Xiloppo, CC0']]},
  {id:'expo',n:'Parc de l’Exposition',ll:[46.3467,-72.5557],per:'ind',ch:12,d:'Fin des années 1930',t:'Un ensemble remarquable du patrimoine moderne, qui a besoin d’entretien.',img:[['c:Colisée Trois Rivières 01.jpg','2012','Le Colisée · Sandra Cohen-Rose et Colin Rose, CC BY-SA 2.0']]},
  {id:'chamberland',n:'Duplex de la rue du Chanoine-Chamberland',ll:[46.3417,-72.5581],per:'mod',ch:10,d:'1944',t:'Les duplex de la coopérative de construction Sainte-Marguerite, fondée par le chanoine Louis-Joseph Chamberland. Le second logement aide le propriétaire à payer sa maison.',img:[],sky:17.5},
@@ -975,8 +992,8 @@ const LIEUX=[
  {id:'laviolette',n:'Pont Laviolette',ll:[46.3131,-72.5715],per:'mod',ch:11,d:'1967',t:'Il franchit le Saint-Laurent vers la Rive-Sud et Bécancour. Les grands centres commerciaux s’installent ensuite près des nouveaux accès, loin de la rue des Forges.',img:[['c:Trois-Rivieres Pont Laviolette.JPG','2008','Abxbay, domaine public']]},
  {id:'mausolee',n:'Mausolée des évêques',ll:[46.3525,-72.5753],per:'mod',ch:12,d:'XXe siècle',t:'Au cœur du cimetière, une œuvre méconnue d’architecture religieuse moderne.',img:[['c:Mausolée des Évêques-de-Trois-Rivières 02.JPG','2011','Fralambert, CC BY-SA 3.0']]},
  {id:'port',n:'Parc portuaire',ll:[46.34198,-72.53696],per:'mod',ch:12,d:'Vieux-Port',t:'Le bord de l’eau rendu aux promeneurs. Depuis l’esplanade, on voit à peine l’arrondissement historique; l’escalier monumental au bout de la rue des Forges a amélioré le lien.',img:[['c:Au pied de la Terrasse Turcotte, en 1896.jpg','1896','Au pied de la terrasse Turcotte · P.-F. Pinsonneault, domaine public']]},
- {id:'cogeco',n:'Amphithéâtre Cogeco',ll:[46.34697,-72.53224],per:'mod',ch:12,d:'2015',t:'Construit au confluent, sur l’ancien site de la papetière.',img:[['c:Amphithéâtre Cogeco novembre 2024.jpg','2024','Fralambert, CC BY-SA 4.0']]},
- {id:'cap',n:'Cap-de-la-Madeleine',ll:[46.3688,-72.4977],per:'xix',ch:12,d:'Rive est du Saint-Maurice',t:'Longtemps une municipalité distincte, mais par son cadre bâti, le prolongement naturel de Trois-Rivières. Le Saint-Maurice n’a jamais vraiment séparé les deux villes.',img:[['c:Trois-Rivières Basilique Notre-Dame-du-Cap seen from the southwest.jpg','2017','Basilique Notre-Dame-du-Cap · Ymblanter, CC BY-SA 4.0']]}
+ {id:'cogeco',n:'Amphithéâtre Cogeco',ll:[46.34697,-72.53224],per:'mod',ch:12,d:'2015',t:'Au confluent, sur le site de la papetière Tripap, fermée en 2000. La Ville rase l’usine et lance le projet Trois-Rivières sur Saint-Laurent pour redonner l’accès au fleuve. L’Atelier Paul Laurendeau remporte le concours d’architecture en 2011; l’amphithéâtre extérieur ouvre en juillet 2015, pour environ 41 millions de dollars, et reçoit la Médaille du Gouverneur général en architecture en 2016. Depuis 2015, le Cirque du Soleil y présente l’été une création exclusive, la série hommage, inaugurée avec la musique de Beau Dommage.',img:[['c:Amphithéâtre Cogeco novembre 2024.jpg','2024','Fralambert, CC BY-SA 4.0']]},
+ {id:'cap',n:'Cap-de-la-Madeleine',ll:[46.3688,-72.4977],sky:13,per:'xix',ch:12,d:'1651 · 1923 · 2002',t:'Seigneurie concédée aux Jésuites en 1651, le Cap reste longtemps rural : vers 1900, quelque 300 familles y vivent de l’agriculture et de la forêt. Sa renommée vient du sanctuaire. La petite église de pierre, ouverte au culte en 1720, est consacrée à Notre-Dame du Très-Saint-Rosaire en 1888. En mars 1879, les paroissiens avaient acheminé sur un pont de glace les pierres de leur nouvelle église : c’est le « pont des chapelets ». La basilique, ouverte en 1964, accueille 1 660 personnes. L’industrie vient au XXe siècle, avec notamment l’International Foils, plus tard Reynolds, en 1938. Érigé en ville en 1923, le Cap compte plus de 32 000 habitants en 2001, l’année avant sa fusion avec Trois-Rivières. Par son cadre bâti, c’est le prolongement naturel de la ville voisine : le Saint-Maurice ne les a jamais vraiment séparées, et des ponts les relient depuis les années 1830.',img:[['c:Trois-Rivières aerial.jpg','2011','Le Saint-Maurice et ses deux rives, vus d’avion · Alkjs, CC BY-SA 4.0'],['c:Église de Cap-de-la-Madeleine BAnQ P748S1P1191.jpg','vers 1909','L’église paroissiale du Cap · BAnQ, domaine public']]}
 ];
 
 /* ---------- Le récit : de la confluence à la ville moderne ---------- */
@@ -1000,7 +1017,7 @@ const CHAP=[
      'Les rues du plan de 1704 sont encore là : la rue Notre-Dame de l’époque est l’actuelle rue des Ursulines, et les rues Saint-Louis, Saint-Jean et Saint-François-Xavier, comme la place d’Armes, occupent les mêmes emplacements. Les Ursulines arrivent en 1697; elles logent d’abord dans la maison des gouverneurs, sur le Platon. Au début du XVIIIe siècle, l’église paroissiale est rebâtie là où se trouve aujourd’hui la place Pierre-Boucher, qu’on appelle couramment place du Flambeau.',
      'Siège d’un gouvernement, comme Québec et Montréal, Trois-Rivières compte aussi quelques bâtiments de prestige.'],
   look:'Le plan de 1704 en fondu sur la ville actuelle : la rue Notre-Dame d’alors suit la rue des Ursulines, et l’église paroissiale occupe la place du Flambeau. Faites varier l’opacité.'},
- {era:'1730 – 1883',h:'Les Forges ferment l’arrière-pays',v:[46.385,-72.60,11],base:'relief',pins:['forgesstm'],
+ {era:'1730 – 1883',h:'Les Forges ferment l’arrière-pays',v:[46.373,-72.600,12.5],base:'carte',pins:['forgesstm'],
   doc:['plan-1760.jpg','Plan de la ville, 1760 : la basse-ville et la haute-ville'],
   p:['En 1730, les Forges du Saint-Maurice s’installent en amont. Le fer affleure, facile à exploiter; il faut du bois pour en faire du charbon. Les Forges obtiennent un privilège sur les massifs forestiers : pas question que des colons défrichent.',
      'Trois-Rivières se retrouve sans l’arrière-pays agricole qui aurait nourri sa croissance. Les plateaux sablonneux se prêtent mal à la culture, et la Rive-Sud est difficile d’accès. Entre Montréal et Québec, les cartes de peuplement montrent un creux : moins de villages, moins de routes.',
@@ -1023,18 +1040,18 @@ const CHAP=[
      'Les rues se garnissent de maisons victoriennes de brique, aux volumes imposants et aux ornements embossés fabriqués en série. Maurice Duplessis habitera l’une d’elles jusqu’à sa mort.',
      'Contrairement aux vieux quartiers de Québec et de Montréal, qui se vident dans les années 1950 à 1970, ce secteur reste recherché.'],
   look:'Plan de 1888 en fondu : le « City Hall », la cathédrale et la prison sont déjà à leur place. Faites varier l’opacité pour passer d’une époque à l’autre.'},
- {era:'22 juin 1908',h:'Le feu',v:[46.3428,-72.5418,16.5],base:'carte',doc2:'feu',pins:['forges','boucher','marche'],
+ {era:'22 juin 1908',h:'Le feu',v:[46.3416,-72.5438,16],base:'carte',doc2:'feu',pins:['forges','boucher','marche','stphilippe'],
   doc:['incendie.jpg','La rue des Forges après l’incendie de 1908 (P.-F. Pinsonneault)'],
   p:['Le matin du 22 juin 1908, un fort vent d’ouest souffle sur la ville. Vers midi, le feu prend dans du foin. À 14 h, il a atteint des proportions inimaginables et toute la pression d’eau disponible ne suffit plus; des pompiers arrivent de Grand-Mère, puis de Montréal. En fin d’après-midi, il atteint la rue Bonaventure et s’approche du manoir de Niverville. On le maîtrise vers 19 h, mais vers 23 h 30, les flammes achèvent de détruire l’Hôtel Frontenac, au coin des rues des Forges et Champlain. Le feu ne fait pas de victimes directes, mais presque tout le centre-ville est rasé.',
      'Les moyens de lutte étaient limités : les aqueducs urbains sont souvent exigés par les assureurs, moins pour les ménages que pour alimenter des bornes-fontaines. Dans les semaines qui suivent, on campe où l’on peut; écoles et séminaire accueillent des familles, des bateaux servent d’hôtels, et des commerçants s’installent temporairement dans le parc Champlain.',
      'L’église paroissiale et la maison des gouverneurs disparaissent dans l’incendie; le site de l’église devient la place Pierre-Boucher. La rue des Forges est reconstruite en quelques années, avec une forte homogénéité : hauteurs semblables, façades continues.',
-     'Arrive aussi le premier gratte-ciel, rendu possible par trois nouveautés : la charpente métallique, l’ascenseur, et l’électricité et le téléphone. Un tramway circule quelques décennies.'],
+     'Arrive aussi le premier gratte-ciel, rendu possible par trois nouveautés : la charpente métallique, l’ascenseur, et l’électricité et le téléphone. Un tramway circule quelques décennies.','Le feu redessine aussi les paroisses. Un mois plus tard, le quartier Saint-Philippe, à l’ouest, réclame la sienne; elle est érigée en 1909, la première à se détacher de la paroisse mère. Dans les fondations de la nouvelle église, on scelle la pierre angulaire retrouvée dans les ruines de l’ancienne.'],
   look:'Le contour rouge marque la zone détruite : la rue des Forges et la place du Flambeau en sont le cœur.'},
- {era:'1897 – 1970',h:'Électricité, papier et coton',v:[46.349,-72.54,14.5],base:'satellite',pins:['cip','cecile','wabasso'],
+ {era:'1897 – 1970',h:'Électricité, papier et coton',v:[46.349,-72.54,14.5],base:'satellite',pins:['cip','ndsa','cecile','wabasso'],
   doc:['cip-1930.jpg','Le complexe de la Canadian International Paper vers 1930 (CIEQ)'],
   p:['En 1897, une ligne à 12 000 volts amène à Trois-Rivières le courant de la centrale de Saint-Narcisse, d’abord pour l’éclairage public. En 1898 naît la Shawinigan Water & Power. Le Saint-Maurice, régularisé par de grands réservoirs, devient une artère hydroélectrique.',
      'Bois, flottage sur la rivière, port et électricité : les papetières s’installent. La Wayagamack ouvre en 1910 sur l’île de la Potherie, la Canadian International Paper en 1920 au confluent, la St. Lawrence Paper en 1922. En 1924, l’usine de la CIP devient la plus importante usine de papier journal au monde, et la ville se proclame capitale mondiale du papier journal. Une école de papeterie ouvre en 1925. Jusqu’aux années 1970, le papier est le fleuron industriel de la ville, au prix d’une forte pollution de l’air.',
-     'Les lignes à haute tension, arrivées en 1906-1907, attirent aussi le textile. La Wabasso Cotton, fondée en 1907, a besoin de main-d’œuvre en pleine crise du logement. Autour d’elle naît Sainte-Cécile, un quartier d’une rare homogénéité : immeubles à logements avec ruelles pour les ouvriers, maisons jumelées près de l’usine pour les cadres, souvent recrutés en Grande-Bretagne.'],
+     'Les lignes à haute tension, arrivées en 1906-1907, attirent aussi le textile. La Wabasso Cotton, fondée en 1907, a besoin de main-d’œuvre en pleine crise du logement. Autour d’elle naît Sainte-Cécile, un quartier d’une rare homogénéité : immeubles à logements avec ruelles pour les ouvriers, maisons jumelées près de l’usine pour les cadres, souvent recrutés en Grande-Bretagne.','Les paroisses suivent la croissance : Notre-Dame-des-Sept-Allégresses en 1911, au nord, confiée aux Franciscains; Sainte-Cécile en 1912; le Très-Saint-Sacrement en 1926, sur le coteau Saint-Louis, que des promoteurs ouvrent vers 1910 en pleine pénurie de logements.'],
   look:'Au confluent, comparez l’emprise de l’usine de 1930 au parc et à l’amphithéâtre d’aujourd’hui.'},
  {era:'1920 – 1959',h:'Le rêve d’un grand port',v:[46.337,-72.55,14],base:'satellite',
   doc:['plan-1861.jpg','Carte nautique de l’Amirauté, de Québec à Pointe-du-Lac, 1861'],
@@ -1095,6 +1112,17 @@ const GLOSS=[
  ['patrimoine moderne',/patrimoine moderne/,'Bâtiments du XXe siècle, souvent des années 1930 à 1970, dont on commence à reconnaître la valeur. Peu protégés, ils sont vulnérables aux démolitions.'],
  ['square',/square/,'Petit jardin public au cœur d’un quartier, entouré de rues.'],
  ['manoir seigneurial',/manoir seigneurial/,'Résidence du seigneur, propriétaire d’une seigneurie sous le régime seigneurial de la Nouvelle-France.']];
+
+const GENS=[
+ {n:'Pierre Boucher',v:'1622 – 1717',o:'Né à Mortagne-au-Perche, en France',p:'boucher',t:'Après quatre ans en Huronie, où il apprend les langues autochtones, il devient interprète au fort de Trois-Rivières dans les années 1640. Il s’impose comme le personnage clé du petit poste : il défend Trois-Rivières assiégée par les Haudenosaunee en 1653, puis en est deux fois gouverneur. En 1663, il signe aux Trois-Rivières sa dédicace de l’Histoire véritable et naturelle de la Nouvelle-France, un plaidoyer pour le peuplement de la colonie. Il fonde ensuite Boucherville, où il meurt.'},
+ {n:'Pierre Gaultier de La Vérendrye',v:'1685 – 1749',o:'Né à Trois-Rivières',t:'Fils de René Gaultier de Varennes, gouverneur de Trois-Rivières, et de Marie Boucher, la fille de Pierre Boucher. Officier et traiteur de fourrures, il lance dans les années 1730, avec ses quatre fils, les expéditions qui ouvrent à la traite française l’ouest du lac Supérieur, jusqu’à la rivière Saskatchewan et au Missouri.'},
+ {n:'Mgr Louis-François Laflèche',v:'1818 – 1898',o:'Né à Sainte-Anne-de-la-Pérade',p:'cathedrale',t:'Missionnaire dans l’Ouest de 1844 à 1856, puis professeur au Collège de Nicolet. Coadjuteur en 1867, il est évêque de Trois-Rivières de 1870 à sa mort, en 1898. Il joue un rôle de premier plan dans les luttes politico-religieuses de son temps.'},
+ {n:'Benjamin Sulte',v:'1841 – 1923',o:'Né à Trois-Rivières',p:'champlain',t:'Fils d’un marin mort dans un naufrage, il quitte l’école des Frères vers dix ans pour faire vivre sa famille. Journaliste, poète, fonctionnaire à Ottawa, il devient l’historien de sa ville : Histoire de la ville des Trois-Rivières et de ses environs (1870), puis Histoire des Canadiens-Français. C’est lui qui, dès 1861, lie le nom de Laviolette à la fondation de la ville. Président de la Société royale du Canada en 1904-1905, il est inhumé à Trois-Rivières. Une plaque fédérale lui rend hommage au parc Champlain.'},
+ {n:'Maurice Duplessis',v:'1890 – 1959',o:'Né à Trois-Rivières',p:'duplessis',t:'Avocat à Trois-Rivières, fils d’un député de la ville. Battu de 284 voix en 1923, il est élu député de Trois-Rivières en 1927 et le reste jusqu’à sa mort. Fondateur de l’Union nationale, il est premier ministre du Québec de 1936 à 1939, puis de 1944 à 1959. Il est inhumé au cimetière Saint-Louis.'},
+ {n:'Jean Béliveau',v:'1931 – 2014',o:'Né à Trois-Rivières',t:'Aîné de huit enfants, il naît à Trois-Rivières le 31 août 1931; sa famille déménage à Plessisville quand il a trois ans, puis à Victoriaville. « Le Gros Bill » joue toute sa carrière dans la LNH avec le Canadien de Montréal, jusqu’en 1971, et remporte dix coupes Stanley. Il entre au Temple de la renommée du hockey en 1972.'},
+ {n:'Gérald Godin',v:'1938 – 1994',o:'Né à Trois-Rivières',p:'seminaire',t:'Élève du Séminaire Saint-Joseph, il fait ses débuts de journaliste au Nouvelliste avant de partir pour Montréal en 1961. Poète des Cantouques (1967), il est arrêté pendant la crise d’Octobre 1970. Élu député de Mercier en 1976 contre Robert Bourassa, il devient ministre, notamment des Communautés culturelles et de l’Immigration.'},
+ {n:'Daniel Lamarre',v:'né en 1953',o:'Né à Grand-Mère',p:'cogeco',t:'Journaliste au Nouvelliste de Trois-Rivières à ses débuts, puis à Radio-Canada, il dirige ensuite le Groupe TVA. Président et chef de la direction du Cirque du Soleil de 2001 à 2021, il en reprend la tête par intérim en 2025. C’est sous sa présidence que le Cirque fait de l’Amphithéâtre Cogeco sa résidence d’été, avec une série hommage présentée l’été depuis 2015. L’UQTR lui a décerné un doctorat honorifique.'}
+];
 </script>
 <script>{
 const $=s=>document.querySelector(s);
@@ -1241,6 +1269,28 @@ renderGrid();$('#nLieux').textContent=`${LIEUX.length} lieux, avec leurs photos 
 
 /* ---------- Sources ---------- */
 const REFS=[
+ ['Trois-Rivières Numérique, Église Saint-Philippe de Trois-Rivières','https://troisrivieresnumerique.ca/documents/eglise-saint-philippe-de-trois-rivieres-i/'],
+ ['Répertoire du patrimoine culturel du Québec, École Saint-Philippe (érection de la paroisse en 1909)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?methode=consulter&id=173747&type=bien'],
+ ['Radio-Canada, L’intrigante pierre angulaire de l’église Saint-Philippe (2022)','https://ici.radio-canada.ca/nouvelle/1856918/pierre-angulaire-demolition-eglise'],
+ ['Ville de Trois-Rivières, fiche patrimoniale de l’église Notre-Dame-des-Sept-Allégresses (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Notre-Dame-des-Sept-Allegresses.pdf'],
+ ['Ville de Trois-Rivières, fiche patrimoniale de l’église du Très-Saint-Sacrement (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Tres-Saint-Sacrement.pdf'],
+ ['Le Nouvelliste, 1987 : arrivée des Frères des écoles chrétiennes à Trois-Rivières en 1844 (BAnQ)','https://collections.banq.qc.ca/document/s/t/SuTP3vSK30Z3fQOBrrAUvQ'],
+ ['ArchDaily, Amphithéâtre Cogeco / Atelier Paul Laurendeau','https://www.archdaily.com/884711/amphitheatre-cogeco-atelier-paul-laurendeau'],
+ ['Infrastructure Canada, inauguration de l’amphithéâtre de Trois-Rivières (2015)','https://www.canada.ca/fr/nouvelles/archive/2015/07/ministres-lebel-girard-participent-inauguration-nouvel-amphitheatre-trois-rivieres.html'],
+ ['Amphithéâtre Cogeco, le Cirque du Soleil à l’amphithéâtre (2015)','https://www.amphitheatrecogeco.com/en/news/the-corporation-de-l-amphitheatre-de-trois-rivieres-welcomes-cirque-du-soleil-this-summer'],
+ ['L’Encyclopédie canadienne, Cap-de-la-Madeleine','https://www.thecanadianencyclopedia.ca/fr/article/cap-de-la-madeleine'],
+ ['Sanctuaire Notre-Dame-du-Cap, Historique','https://www.sanctuaire-ndc.ca/en/?p=648'],
+ ['Ville de Trois-Rivières, fiche du Petit Sanctuaire et de la basilique Notre-Dame-du-Cap (Patri-Arch, 2024)','https://www.v3r.net/wp-content/uploads/2024/07/2024_Chapelle-du-Sanctuaire-et-Basilique.pdf'],
+ ['Dictionnaire biographique du Canada, Pierre Boucher','https://www.biographi.ca/en/bio/boucher_pierre_2E.html'],
+ ['Dictionnaire biographique du Canada, Pierre Gaultier de Varennes et de La Vérendrye','https://www.biographi.ca/en/bio/gaultier_de_varennes_et_de_la_verendrye_pierre_3E.html'],
+ ['Dictionnaire biographique du Canada, Louis-François Laflèche','https://www.biographi.ca/en/bio/lafleche_louis_francois_12E.html'],
+ ['Dictionnaire biographique du Canada, Benjamin Sulte','https://www.biographi.ca/en/bio/sulte_benjamin_15E.html'],
+ ['Parcs Canada, Benjamin Sulte (1841-1923)','https://parks.canada.ca/culture/cseh-twih/202438'],
+ ['L’Encyclopédie canadienne, Maurice Duplessis','https://thecanadianencyclopedia.ca/fr/article/maurice-le-noblet-duplessis'],
+ ['L’Encyclopédie canadienne, Jean Béliveau','https://www.thecanadianencyclopedia.ca/fr/article/jean-beliveau'],
+ ['L’Encyclopédie canadienne, Gérald Godin','https://www.thecanadianencyclopedia.ca/fr/article/gerald-godin'],
+ ['Université d’Ottawa, Daniel Lamarre (doctorat honorifique)','https://www.uottawa.ca/notre-universite/recteur/doctorats-honorifiques/lamarre-daniel'],
+ ['Cirque du Soleil, nomination de Mark Cornell (2025)','https://www.cirquedusoleil.com/press/news/2025/cirque-du-soleil-announces-the-appointment-of-mark-cornell'],
  ['Ville de Trois-Rivières, Survol historique','https://www.v3r.net/culture/histoire-et-patrimoine/histoire-de-trois-rivieres'],
  ['Répertoire du patrimoine culturel du Québec, Site patrimonial de Trois-Rivières (déclaré en 1964)','https://www.patrimoine-culturel.gouv.qc.ca/detail.do?id=93531&methode=consulter&type=bien'],
  ['Répertoire, Hôtel de ville et centre culturel de Trois-Rivières (prix Massey 1971, hôtels de ville successifs)','https://www.patrimoine-culturel.gouv.qc.ca/rpcq/detail.do?id=174361&methode=consulter&type=bien'],
@@ -1261,8 +1311,14 @@ const CRED=[['hero-1881.jpg','Vue à vol d’oiseau de Trois-Rivières en 1881, 
  ...LIEUX.flatMap(l=>l.img.map(([f,y,c])=>[f,`${l.n}, ${y} : ${c}`])),['forges-2006.jpg','Rue des Forges, 2006 : Nicholas Wang, CC BY-SA 2.0']];
 $('#credits').innerHTML=CRED.map(([f,t])=>`<li>${f.startsWith('c:')?`<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.slice(2).replace(/ /g,'_'))}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t)}</li>`).join('')+'<li>Images de Wikimedia Commons affichées depuis Commons; cliquez sur un crédit pour voir la fiche, l’auteur et la licence.</li>';
 
+/* ---------- Personnages ---------- */
+const initials=n=>n.replace(/^Mgr /,'').split(/[ -]/).filter(w=>/^[A-ZÉ]/.test(w)).map(w=>w[0]).slice(0,2).join('');
+$('#ggrid').innerHTML=GENS.map(g=>`<article class="card gcard"><div class="cb"><div class="mono" aria-hidden="true">${initials(g.n)}</div><p class="dates">${esc(g.v)}</p><h3>${esc(g.n)}</h3><p class="orig">${esc(g.o)}</p><p>${gloss([g.t])[0]}</p>${g.p&&PL[g.p]&&PL[g.p].ll?`<button class="go" data-go="${g.p}">${esc(PL[g.p].n)} sur la carte →</button>`:''}</div></article>`).join('');
+
+$('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dataset.go)};
+
 /* ---------- Navigation : une vue à la fois, l’onglet actif indique où l’on est ---------- */
-function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','sources'].includes(v)?v:'accueil';
+function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('-');const view=['accueil','recit','carte','lieux','gens','sources'].includes(v)?v:'accueil';
  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
  document.querySelectorAll('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+view)||0);
  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.setAttribute('aria-current','page')});
