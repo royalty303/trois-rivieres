@@ -161,7 +161,8 @@ $('#ggrid').onclick=e=>{const b=e.target.closest('[data-go]');if(b)goPlace(b.dat
 const goBtn=x=>x.p&&PL[x.p]&&PL[x.p].ll?`<button class="go" data-go="${x.p}">${esc(PL[x.p].n)} sur la carte →</button>`:(x.ll?`<button class="go" data-ll="${x.ll.join(',')}" data-n="${esc(x.n)}">Voir sur la carte →</button>`:'');
 const tcard=x=>`<article class="card tcard"><div class="cb"><p class="when">${esc(x.d)}</p><h3>${esc(x.n)}</h3><p>${gloss([x.t])[0]}</p>${srcLine(x.s)}${goBtn(x)}</div></article>`;
 $('#igrid').innerHTML=INST.map(tcard).join('');
-function renderNoms(){const q=norm($('#qn').value||'');$('#ngrid').innerHTML=TOPO.filter(x=>norm(x.n+' '+x.d+' '+x.t).includes(q)).map(tcard).join('')||'<p>Aucun nom ne correspond.</p>'}
+function renderNoms(){const q=norm($('#qn').value||'');const L=TOPO.filter(x=>norm(x.n+' '+x.d+' '+x.t+' '+x.g).includes(q));const G=[...new Set(TOPO.map(x=>x.g))];
+ $('#ngrid').innerHTML=G.map(g=>{const xs=L.filter(x=>x.g===g);return xs.length?`<h3 class="ghead">${esc(g)} <small>${xs.length}</small></h3><div class="grid">${xs.map(tcard).join('')}</div>`:''}).join('')||'<p>Aucun nom ne correspond.</p>'}
 renderNoms();$('#qn').oninput=renderNoms;
 let topoMark=null;
 function goTopo(ll,n){location.hash='#carte';setTimeout(()=>{if(!C)return;if(topoMark)C.map.removeLayer(topoMark);

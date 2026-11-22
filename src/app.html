@@ -218,6 +218,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 .subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 22px}
 .subtabs a{border:1px solid var(--ink);padding:8px 15px;font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink)}
 .subtabs a[aria-current]{background:var(--ink);color:#fff}
+.ghead{font-size:1.35rem;margin:34px 0 14px;padding-top:14px;border-top:2px solid var(--ink)}.ghead small{font:600 .8rem system-ui,sans-serif;color:var(--muted);margin-left:6px}
 .subp{display:none}.subp.on{display:block}
 .tcard .cb{padding:20px 22px}
 .tcard .when{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:0 0 6px;text-transform:uppercase}
@@ -313,9 +314,9 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
     <div class="grid" id="igrid"></div>
    </div>
    <div class="subp" id="s-noms">
-    <p class="intro">Pourquoi ce nom ? Derrière les plaques de rue et les panneaux de parc, des gens et des épisodes de l’histoire trifluvienne. Les noms les plus récents viennent des décisions du comité de toponymie de la Ville.</p>
+    <p class="intro">Pourquoi ce nom ? Derrière les plaques de rue et les panneaux de parc, des gens et des épisodes de l’histoire trifluvienne. La plupart des fiches s’appuient sur le répertoire toponymique de la Ville de Trois-Rivières; les noms les plus récents viennent des décisions de son comité de toponymie.</p>
     <div class="filters"><input type="search" id="qn" placeholder="Chercher un nom, un quartier…" aria-label="Chercher un nom de lieu" style="margin-left:0"></div>
-    <div class="grid" id="ngrid"></div>
+    <div id="ngrid"></div>
    </div>
   </div>
  </section>
