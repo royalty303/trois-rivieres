@@ -108,7 +108,7 @@ figcaption{font-size:.78rem;color:var(--muted);margin-top:7px}
 .carte{display:grid;grid-template-columns:minmax(0,1fr) 330px;height:calc(100svh - var(--hd))}
 .side{border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:#fff}
 .side h2{font-size:1.6rem;padding:18px 18px 4px}
-.side p.sub{font-size:.85rem;color:var(--muted);margin:0;padding:0 18px 10px}
+.side .sub{font-size:.85rem;color:var(--muted);margin:0;padding:0 18px 10px}
 .legend{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px;border-bottom:1px solid var(--line)}
 .legend button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;padding:5px 9px;font-size:.76rem}
 .legend button[aria-pressed=false]{opacity:.4}
@@ -231,6 +231,9 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 .stops li b{display:block;font-size:.98rem;cursor:pointer}
 .stops li small{display:block;color:var(--muted);font-size:.78rem;margin:2px 0 6px}
 .stops li p{font-size:.86rem;margin:0 0 8px}
+.stops li .vu{background:#f4efe9;border-left:3px solid var(--accent);padding:6px 9px;font-size:.82rem}
+.stops li .leg{display:block;margin-top:9px;font-size:.74rem;color:var(--muted);font-weight:600}
+#pIntro .srcs{margin-top:6px;font-size:.74rem}
 .stops li .lk{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem}
 .stops li .lk a,.stops li .lk button{color:var(--ink);font-weight:600;font-size:.8rem;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .stops li.on{background:#f4efe9}
@@ -326,7 +329,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <div class="mapbox" id="mbP"><div class="lmap" id="mapP"></div></div>
    <aside class="side">
     <h2>Le Vieux-Trois-Rivières à pied</h2>
-    <p class="sub" id="pIntro"></p>
+    <div class="sub" id="pIntro"></div>
     <button class="locbtn" id="loc">Me situer sur la carte</button>
     <ol class="stops" id="stops"></ol>
    </aside>

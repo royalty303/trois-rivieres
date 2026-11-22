@@ -171,21 +171,22 @@ function goTopo(ll,n){location.hash='#carte';setTimeout(()=>{if(!C)return;if(top
 ['#igrid','#ngrid'].forEach(g=>$(g).onclick=e=>{const b=e.target.closest('[data-go],[data-ll]');if(!b)return;if(b.dataset.go)goPlace(b.dataset.go);else goTopo(b.dataset.ll.split(',').map(Number),b.dataset.n)});
 
 /* ---------- Parcours à pied ---------- */
-const STOPS=PARCOURS.map(id=>PL[id]);
+const STOPS=PARCOURS.map(id=>Object.assign({},PL[id],{pll:(PSTOP[id]&&PSTOP[id].ll)||PL[id].ll,vu:PSTOP[id]&&PSTOP[id].vu}));
 const hav=(a,b)=>{const r=Math.PI/180,x=Math.sin((b[0]-a[0])*r/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin((b[1]-a[1])*r/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
-const pLen=STOPS.reduce((t,l,i)=>i?t+hav(STOPS[i-1].ll,l.ll):0,0);
-$('#pIntro').textContent=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, du lieu de l’ancienne église paroissiale jusqu’à la rue des Forges. Environ ${(Math.round(pLen*1.3/100)/10).toString().replace('.',',')} km de marche; comptez une heure et demie à deux heures avec les arrêts. Chaque arrêt ouvre l’itinéraire à pied depuis votre position.`;
+const km=m=>(Math.round(m/100)/10).toString().replace('.',',');
+$('#pIntro').innerHTML=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, de la place Pierre-Boucher à la rue des Forges. Le tracé suit les rues et les sentiers piétonniers : environ ${km(PROUTE.d)} km de marche, soit une demi-heure sans s’arrêter; comptez une heure et demie à deux heures avec les arrêts. ${srcLine(['osrm'])}`;
 const firstSent=t=>{const m=t.match(/^.+?[.!?](\s|$)/);return m?m[0].trim():t};
-$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p><div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.ll[0]},${l.ll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div></li>`).join('');
+$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p>${l.vu?`<p class="vu">${esc(l.vu)}</p>`:''}<div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.pll[0]},${l.pll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div>${i<STOPS.length-1?`<span class="leg">↓ ${PROUTE.legs[i]} m jusqu’à l’arrêt ${i+2}</span>`:''}</li>`).join('');
 let P=null;const pMarks=[];
-function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].ll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
+function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].pll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
 function parcoursMap(){if(P){P.invalidateSize();return}
- setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[24,24]})},250);
+ setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(PROUTE.g),{padding:[24,24]})},250);
  P=L.map('mapP',{zoomControl:true}).setView([46.3436,-72.5395],16);
  L.tileLayer(BASES.carte[1],{maxZoom:20,maxNativeZoom:19,attribution:BASES.carte[3]}).addTo(P);
- L.polyline(STOPS.map(l=>l.ll),{color:'#b5532b',weight:4,opacity:.75,dashArray:'2 9',lineCap:'round'}).addTo(P);
- STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.ll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
- P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[30,30]})}
+ L.polyline(PROUTE.g,{color:'#fff',weight:8,opacity:.85,lineJoin:'round'}).addTo(P);
+ L.polyline(PROUTE.g,{color:'#b5532b',weight:4.5,opacity:.95,lineJoin:'round',lineCap:'round'}).addTo(P);
+ STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.pll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(l.vu||firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+ P.fitBounds(L.latLngBounds(PROUTE.g),{padding:[30,30]})}
 $('#stops').onclick=e=>{const f=e.target.closest('[data-fiche]');if(f){openFiche(f.dataset.fiche);return}const b=e.target.closest('[data-i]');if(b&&!e.target.closest('a'))pSel(+b.dataset.i)};
 let meMark=null;
 $('#loc').onclick=()=>{if(!navigator.geolocation){$('#loc').textContent='Géolocalisation non disponible';return}

@@ -769,7 +769,7 @@ figcaption{font-size:.78rem;color:var(--muted);margin-top:7px}
 .carte{display:grid;grid-template-columns:minmax(0,1fr) 330px;height:calc(100svh - var(--hd))}
 .side{border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:#fff}
 .side h2{font-size:1.6rem;padding:18px 18px 4px}
-.side p.sub{font-size:.85rem;color:var(--muted);margin:0;padding:0 18px 10px}
+.side .sub{font-size:.85rem;color:var(--muted);margin:0;padding:0 18px 10px}
 .legend{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px;border-bottom:1px solid var(--line)}
 .legend button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;padding:5px 9px;font-size:.76rem}
 .legend button[aria-pressed=false]{opacity:.4}
@@ -892,6 +892,9 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
 .stops li b{display:block;font-size:.98rem;cursor:pointer}
 .stops li small{display:block;color:var(--muted);font-size:.78rem;margin:2px 0 6px}
 .stops li p{font-size:.86rem;margin:0 0 8px}
+.stops li .vu{background:#f4efe9;border-left:3px solid var(--accent);padding:6px 9px;font-size:.82rem}
+.stops li .leg{display:block;margin-top:9px;font-size:.74rem;color:var(--muted);font-weight:600}
+#pIntro .srcs{margin-top:6px;font-size:.74rem}
 .stops li .lk{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem}
 .stops li .lk a,.stops li .lk button{color:var(--ink);font-weight:600;font-size:.8rem;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .stops li.on{background:#f4efe9}
@@ -987,7 +990,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
    <div class="mapbox" id="mbP"><div class="lmap" id="mapP"></div></div>
    <aside class="side">
     <h2>Le Vieux-Trois-Rivières à pied</h2>
-    <p class="sub" id="pIntro"></p>
+    <div class="sub" id="pIntro"></div>
     <button class="locbtn" id="loc">Me situer sur la carte</button>
     <ol class="stops" id="stops"></ol>
    </aside>
@@ -1254,7 +1257,17 @@ const INST=[
 ];
 
 /* Parcours à pied : ordre des arrêts (ids de LIEUX) */
-const PARCOURS=['boucher','platon','port','armes','rueursulines','stjames','ursulines','ecole','prison','niverville','duplessis','cathedrale','champlain','hdv','thompson','forges'];
+const PARCOURS=['boucher','platon','port','ursulines','stjames','rueursulines','armes','ecole','prison','niverville','duplessis','cathedrale','champlain','hdv','thompson','forges'];
+/* Tracé piétonnier précalculé (OSRM, profil piéton, données OpenStreetMap), distances par tronçon en mètres */
+const PROUTE={"g":[[46.342945,-72.539409],[46.342808,-72.539081],[46.342799,-72.539061],[46.342791,-72.539046],[46.342781,-72.539034],[46.342739,-72.538983],[46.342723,-72.538966],[46.342662,-72.538904],[46.34262,-72.538866],[46.342609,-72.538853],[46.342388,-72.538553],[46.342351,-72.538613],[46.342341,-72.538624],[46.342328,-72.538632],[46.342314,-72.538636],[46.342302,-72.538637],[46.342288,-72.538633],[46.342273,-72.538622],[46.342259,-72.538609],[46.342248,-72.538593],[46.342237,-72.538575],[46.342218,-72.538524],[46.342207,-72.538498],[46.342199,-72.53848],[46.342189,-72.538468],[46.342177,-72.538451],[46.342163,-72.538434],[46.34215,-72.538419],[46.342137,-72.538408],[46.342121,-72.538396],[46.342091,-72.538356],[46.342063,-72.538318],[46.342045,-72.538287],[46.342031,-72.538256],[46.342018,-72.53822],[46.342012,-72.538191],[46.342005,-72.538164],[46.34199,-72.538131],[46.341984,-72.538123],[46.34199,-72.538131],[46.342005,-72.538164],[46.342004,-72.538183],[46.342003,-72.538199],[46.341999,-72.538218],[46.341994,-72.538239],[46.34198,-72.538277],[46.341962,-72.538321],[46.34193,-72.538393],[46.34191,-72.538432],[46.341909,-72.538434],[46.341884,-72.538463],[46.341859,-72.538489],[46.34184,-72.538504],[46.341823,-72.538511],[46.341794,-72.538519],[46.341769,-72.538521],[46.341753,-72.538518],[46.341735,-72.538511],[46.341709,-72.538495],[46.341656,-72.538453],[46.341618,-72.538408],[46.341578,-72.538348],[46.341579,-72.53831],[46.341573,-72.538081],[46.341573,-72.538052],[46.341567,-72.53804],[46.341571,-72.538027],[46.341573,-72.538011],[46.34158,-72.537839],[46.341579,-72.537822],[46.341578,-72.537808],[46.341575,-72.537796],[46.341565,-72.537766],[46.341562,-72.537754],[46.34156,-72.537741],[46.34156,-72.537711],[46.341562,-72.537701],[46.341566,-72.537688],[46.341583,-72.537656],[46.341602,-72.53762],[46.34162,-72.537585],[46.341674,-72.53748],[46.34169,-72.537455],[46.341718,-72.537419],[46.341785,-72.537325],[46.341997,-72.536983],[46.342207,-72.536645],[46.342217,-72.536628],[46.342223,-72.536609],[46.342227,-72.536593],[46.34223,-72.536574],[46.342232,-72.53651],[46.342234,-72.536484],[46.342237,-72.536472],[46.342243,-72.53646],[46.342605,-72.535871],[46.342616,-72.535857],[46.342625,-72.535848],[46.342635,-72.535842],[46.342645,-72.53584],[46.342656,-72.535839],[46.342666,-72.53584],[46.342676,-72.535843],[46.342684,-72.53585],[46.342764,-72.535945],[46.342769,-72.53595],[46.342777,-72.535954],[46.342783,-72.535955],[46.342851,-72.535946],[46.342857,-72.535943],[46.342863,-72.53594],[46.34287,-72.535934],[46.342922,-72.535861],[46.342927,-72.535857],[46.342935,-72.535853],[46.342943,-72.535851],[46.342951,-72.53585],[46.342959,-72.535851],[46.342967,-72.535855],[46.343019,-72.53588],[46.343024,-72.535882],[46.343031,-72.535883],[46.343038,-72.535881],[46.343043,-72.535878],[46.34305,-72.535872],[46.343274,-72.535507],[46.343318,-72.535512],[46.343371,-72.535509],[46.343465,-72.535383],[46.343604,-72.535186],[46.343608,-72.53518],[46.343613,-72.535176],[46.343619,-72.535172],[46.343625,-72.53517],[46.343631,-72.53517],[46.343637,-72.53517],[46.343642,-72.535172],[46.343648,-72.535176],[46.343653,-72.53518],[46.344156,-72.535762],[46.344197,-72.535812],[46.34414,-72.535923],[46.344119,-72.535968],[46.344103,-72.53601],[46.34407,-72.536092],[46.344017,-72.536227],[46.343984,-72.536318],[46.343959,-72.536402],[46.343904,-72.536616],[46.343875,-72.536713],[46.343853,-72.536777],[46.34384,-72.536809],[46.343829,-72.536831],[46.343813,-72.536863],[46.343702,-72.537055],[46.343682,-72.537106],[46.343657,-72.537153],[46.343625,-72.537214],[46.343585,-72.537277],[46.343509,-72.537389],[46.343372,-72.537627],[46.34314,-72.538028],[46.343073,-72.538147],[46.343037,-72.538106],[46.343012,-72.538078],[46.343037,-72.538106],[46.343073,-72.538147],[46.34314,-72.538028],[46.343372,-72.537627],[46.343509,-72.537389],[46.343585,-72.537277],[46.343635,-72.537339],[46.344147,-72.537905],[46.344187,-72.53795],[46.344189,-72.537952],[46.344187,-72.53795],[46.344133,-72.538046],[46.343739,-72.538743],[46.343551,-72.539075],[46.343533,-72.53912],[46.343524,-72.539149],[46.343516,-72.539185],[46.343513,-72.539219],[46.343513,-72.539258],[46.343515,-72.539284],[46.343523,-72.539353],[46.343546,-72.539343],[46.343569,-72.53934],[46.343596,-72.539342],[46.343628,-72.539357],[46.343661,-72.539379],[46.343695,-72.539408],[46.343785,-72.539503],[46.343843,-72.539566],[46.344092,-72.539855],[46.344161,-72.539937],[46.344265,-72.53975],[46.344345,-72.539628],[46.344472,-72.539776],[46.344345,-72.539628],[46.344265,-72.53975],[46.344161,-72.539937],[46.344092,-72.539855],[46.343843,-72.539566],[46.343785,-72.539503],[46.343695,-72.539408],[46.343661,-72.539379],[46.343628,-72.539357],[46.343596,-72.539342],[46.343569,-72.53934],[46.343546,-72.539343],[46.343523,-72.539353],[46.343494,-72.539372],[46.343186,-72.539595],[46.343061,-72.539688],[46.343109,-72.539802],[46.343466,-72.54068],[46.34353,-72.540838],[46.343569,-72.540935],[46.343611,-72.541054],[46.343647,-72.541167],[46.343657,-72.541206],[46.343672,-72.541261],[46.343727,-72.541473],[46.343765,-72.541624],[46.343794,-72.54175],[46.343892,-72.542153],[46.344058,-72.542851],[46.344103,-72.54304],[46.344126,-72.543145],[46.344046,-72.543171],[46.344035,-72.543151],[46.343998,-72.543111],[46.343923,-72.543039],[46.343762,-72.54299],[46.343647,-72.542972],[46.343585,-72.542701],[46.343571,-72.542651],[46.343585,-72.542701],[46.343282,-72.54287],[46.343217,-72.542906],[46.3431,-72.54297],[46.342792,-72.543136],[46.342264,-72.543422],[46.342276,-72.543512],[46.342287,-72.543591],[46.342276,-72.543512],[46.342203,-72.543546],[46.341661,-72.543784],[46.341502,-72.542854]],"legs":[158,195,361,63,31,109,182,270,282,46,134,107,99,76,152],"d":2265};
+/* Ajustements propres au parcours : point d’arrêt (ll) et ce que le marcheur voit sur place (vu) */
+const PSTOP={
+ boucher:{vu:'Sur place : l’église a disparu dans le feu de 1908; son emplacement est aujourd’hui marqué au sol.'},
+ platon:{vu:'Sur place : un parc. Le fort et la maison des gouverneurs ont disparu; une plaque du Lieu historique national se trouve rue des Casernes.'},
+ ecole:{vu:'Sur place : ne cherchez pas l’école. C’est le bas-relief de 1984, érigé par les anciens élèves au coin des rues Saint-Pierre et Saint-François-Xavier, qui garde la mémoire des Frères.'},
+ prison:{ll:[46.34447,-72.53978]},
+ hdv:{ll:[46.34286,-72.5434],vu:'Sur place : l’hôtel de ville de 1967, sur la place Alphonse-Piché. Le premier, de 1872, se trouvait face au parc Champlain.'},
+};
 
 const SRC={
  beaudet:["Notes de la conférence de Gérard Beaudet (2026)", "Notes de la conférence de Gérard Beaudet, urbaniste (Université de Montréal), 19 novembre 2026, prises par Maxime Savary", ""],
@@ -1338,6 +1351,8 @@ const SRC={
  uqtr_stemarguerite:["UQTR (mémoire)", "Mémoire de maîtrise UQTR sur la Caisse populaire Sainte-Marguerite de Trois-Rivières", "https://depot-e.uqtr.ca/id/eprint/4737/1/000628952.pdf"],
  cs_claireroy:["Récits Mauriciennes : Claire Roy", "Musée virtuel du Canada, Histoires de chez nous, Mauriciennes et presse régionale : Claire Roy", "https://www.communitystories.ca/v2/mauriciennes-presse-regionale_mauricie-women-local-press/?p=349"],
  cs_claireroy2:["Récits Mauriciennes : 1955", "Musée virtuel du Canada, Histoires de chez nous, Mauriciennes et presse régionale : glissement de terrain à Nicolet, article de Claire Roy (1955)", "https://www.communitystories.ca/v2/mauriciennes-presse-regionale_mauricie-women-local-press/?p=353"],
+ pc_fort:["Parcs Canada : Fort-Trois-Rivières","Parcs Canada, Lieu historique national du Canada du Fort-Trois-Rivières (plaque, rue des Casernes)","https://pc.gc.ca/apps/dfhd/page_nhs_eng.aspx?id=720"],
+ osrm:["OSRM / OpenStreetMap","Itinéraire piéton calculé avec OSRM (serveur FOSSGIS routing.openstreetmap.de) sur les données OpenStreetMap","https://routing.openstreetmap.de/"],
  nouv_savary:["Le Nouvelliste, 24 mai 2012", "Martin Francoeur, article sur l’inauguration du parc Claude-Savary, Le Nouvelliste, 24 mai 2012, édition imprimée", ""],
  v3r_topo2025:["Ville, 20 mai 2025", "Ville de Trois-Rivières, Trois-Rivières renomme plusieurs lieux pour honorer des gens qui ont marqué son histoire, 20 mai 2025", "https://www.v3r.net/wp-content/uploads/2025/05/Communique_nouveauxnoms_espacespublics_toponymie.pdf"],
  v3r_msp2026:["Ville, 4 août 2026", "Ville de Trois-Rivières, La Ville honore la poète trifluvienne Madeleine Saint-Pierre, 4 août 2026", "https://www.v3r.net/wp-content/uploads/2026/08/Communique-La-Ville-honore-la-poete-trifluvienne-Madeleine-Saint-Pierre.pdf"],
@@ -1592,21 +1607,22 @@ function goTopo(ll,n){location.hash='#carte';setTimeout(()=>{if(!C)return;if(top
 ['#igrid','#ngrid'].forEach(g=>$(g).onclick=e=>{const b=e.target.closest('[data-go],[data-ll]');if(!b)return;if(b.dataset.go)goPlace(b.dataset.go);else goTopo(b.dataset.ll.split(',').map(Number),b.dataset.n)});
 
 /* ---------- Parcours à pied ---------- */
-const STOPS=PARCOURS.map(id=>PL[id]);
+const STOPS=PARCOURS.map(id=>Object.assign({},PL[id],{pll:(PSTOP[id]&&PSTOP[id].ll)||PL[id].ll,vu:PSTOP[id]&&PSTOP[id].vu}));
 const hav=(a,b)=>{const r=Math.PI/180,x=Math.sin((b[0]-a[0])*r/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin((b[1]-a[1])*r/2)**2;return 12742000*Math.asin(Math.sqrt(x))};
-const pLen=STOPS.reduce((t,l,i)=>i?t+hav(STOPS[i-1].ll,l.ll):0,0);
-$('#pIntro').textContent=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, du lieu de l’ancienne église paroissiale jusqu’à la rue des Forges. Environ ${(Math.round(pLen*1.3/100)/10).toString().replace('.',',')} km de marche; comptez une heure et demie à deux heures avec les arrêts. Chaque arrêt ouvre l’itinéraire à pied depuis votre position.`;
+const km=m=>(Math.round(m/100)/10).toString().replace('.',',');
+$('#pIntro').innerHTML=`${STOPS.length} arrêts dans l’arrondissement historique et le centre-ville, de la place Pierre-Boucher à la rue des Forges. Le tracé suit les rues et les sentiers piétonniers : environ ${km(PROUTE.d)} km de marche, soit une demi-heure sans s’arrêter; comptez une heure et demie à deux heures avec les arrêts. ${srcLine(['osrm'])}`;
 const firstSent=t=>{const m=t.match(/^.+?[.!?](\s|$)/);return m?m[0].trim():t};
-$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p><div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.ll[0]},${l.ll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div></li>`).join('');
+$('#stops').innerHTML=STOPS.map((l,i)=>`<li data-i="${i}"><button class="num" data-i="${i}" aria-label="Arrêt ${i+1} sur la carte">${i+1}</button><b data-i="${i}">${esc(l.n)}</b><small>${esc(l.d)}</small><p>${esc(firstSent(l.t))}</p>${l.vu?`<p class="vu">${esc(l.vu)}</p>`:''}<div class="lk"><button data-fiche="${l.id}">Fiche du lieu</button><a href="https://www.google.com/maps/dir/?api=1&destination=${l.pll[0]},${l.pll[1]}&travelmode=walking" target="_blank" rel="noopener">Itinéraire à pied ↗</a>${l.sv?`<a href="${svUrl(l.sv)}" target="_blank" rel="noopener">Street View ↗</a>`:''}</div>${i<STOPS.length-1?`<span class="leg">↓ ${PROUTE.legs[i]} m jusqu’à l’arrêt ${i+2}</span>`:''}</li>`).join('');
 let P=null;const pMarks=[];
-function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].ll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
+function pSel(i){if(!P)return;document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));P.flyTo(STOPS[i].pll,18,{duration:.7});pMarks[i].openPopup();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'})}
 function parcoursMap(){if(P){P.invalidateSize();return}
- setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[24,24]})},250);
+ setTimeout(()=>{P.invalidateSize();P.fitBounds(L.latLngBounds(PROUTE.g),{padding:[24,24]})},250);
  P=L.map('mapP',{zoomControl:true}).setView([46.3436,-72.5395],16);
  L.tileLayer(BASES.carte[1],{maxZoom:20,maxNativeZoom:19,attribution:BASES.carte[3]}).addTo(P);
- L.polyline(STOPS.map(l=>l.ll),{color:'#b5532b',weight:4,opacity:.75,dashArray:'2 9',lineCap:'round'}).addTo(P);
- STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.ll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
- P.fitBounds(L.latLngBounds(STOPS.map(l=>l.ll)),{padding:[30,30]})}
+ L.polyline(PROUTE.g,{color:'#fff',weight:8,opacity:.85,lineJoin:'round'}).addTo(P);
+ L.polyline(PROUTE.g,{color:'#b5532b',weight:4.5,opacity:.95,lineJoin:'round',lineCap:'round'}).addTo(P);
+ STOPS.forEach((l,i)=>{pMarks[i]=L.marker(l.pll,{icon:L.divIcon({className:'pnum',html:String(i+1),iconSize:[26,26]}),title:l.n}).addTo(P).bindPopup(`<small>Arrêt ${i+1}</small><b>${esc(l.n)}</b>${esc(l.vu||firstSent(l.t))}`,{maxWidth:240});pMarks[i].on('click',()=>{document.querySelectorAll('#stops li').forEach(li=>li.classList.toggle('on',+li.dataset.i===i));const li=document.querySelector(`#stops li[data-i="${i}"]`);if(innerWidth>900)li.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+ P.fitBounds(L.latLngBounds(PROUTE.g),{padding:[30,30]})}
 $('#stops').onclick=e=>{const f=e.target.closest('[data-fiche]');if(f){openFiche(f.dataset.fiche);return}const b=e.target.closest('[data-i]');if(b&&!e.target.closest('a'))pSel(+b.dataset.i)};
 let meMark=null;
 $('#loc').onclick=()=>{if(!navigator.geolocation){$('#loc').textContent='Géolocalisation non disponible';return}
