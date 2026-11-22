@@ -929,7 +929,7 @@ dialog .x{position:absolute;right:10px;top:8px;border:0;background:none;font-siz
     <a class="door" href="#gens"><b>La mémoire de la ville</b><span>Des Trifluviens et des Trifluviennes, des institutions phares, et pourquoi tel parc ou telle rue porte son nom.</span></a>
     <a class="door" href="#parcours"><b>Marcher le Vieux-Trois-Rivières</b><span>16 arrêts à pied, de la place Pierre-Boucher à la rue des Forges.</span></a>
    </div>
-   <p class="contact">Une question, une correction, un souvenir à partager ? Écrivez-moi : <a href="mailto:maximesavary@yahoo.ca">maximesavary@yahoo.ca</a></p>
+   <p class="contact">Une question, une correction, un souvenir à partager ? Écrivez-moi : <a id="mel" data-u="yravasemixam" data-d="ac.oohay">maximesavary [à] yahoo [point] ca</a></p>
   </div><span class="hero-credit">Vue à vol d’oiseau de Trois-Rivières en 1881 · BAnQ</span></div>
  </section>
 
@@ -1697,5 +1697,6 @@ function route(){const h=location.hash.slice(1)||'accueil';const [v,n]=h.split('
 addEventListener('hashchange',route);route();
 }
 </script>
+<script>(function(){var a=document.getElementById("mel");if(!a)return;var r=function(x){return x.split("").reverse().join("")};var m=r(a.dataset.u)+"@"+r(a.dataset.d);a.textContent=m;a.href="mail"+"to:"+m;})();</script>
 </body>
 </html>
